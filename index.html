@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalkulator Simulasi Nilai Gabungan SPMB 2025 SMP Negeri di Sleman - Untuk Jalur Domisili Wilayah dan Jalur Prestasi</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    background: #fdfdfd;
+    color: #111;
+    padding: 1rem;
+    margin: 0 auto;
+    max-width: 480px;
+  }
+
+  h1, h2, h3 {
+    text-align: center;
+    font-size: 22px;
+    margin-top: 1.5rem;
+    color: #004085;
+  }
+
+  label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: bold;
+  }
+
+  input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 20px;
+    margin-top: 0.25rem;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+  }
+
+  input[type="number"]:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #f0f8ff;
+  }
+
+  .section {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .result {
+    margin-top: 2rem;
+    padding: 1rem;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 10px;
+    background-color: #e9f7ff;
+    border: 2px solid #007bff;
+  }
+
+  button {
+    font-size: 20px;
+    padding: 14px 24px;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    background: #4CAF50;
+    color: white;
+    transition: background 0.2s ease;
+  }
+
+  button:active {
+    background: #388E3C;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+    color: white;
+  }
+
+  button.secondary {
+    background-color: #e0e0e0;
+    color: #333;
+  }
+
+  button.secondary:active {
+    background-color: #aaa;
+  }
+
+  .flash {
+    animation: flashHighlight 1s ease-in-out;
+  }
+
+  @keyframes flashHighlight {
+    0% { background-color: #fff3cd; }
+    50% { background-color: #ffeeba; }
+    100% { background-color: transparent; }
+  }
+</style>
+
+</head>
+<body>
+
+  <h1>Simulasi Hitung Nilai Gabungan SPMB 2025 SMP Negeri di Sleman</h1>
+  <h2>Untuk Jalur Domisili Wilayah</h2>
+  <h2>dan Jalur Prestasi</h2>
+  <p><strong>Petunjuk:</strong> Isi nilai rapor & ASPD untuk 3 MatPel. Tiga MatPel itu adalah IPA/IPAS, Bahasa Indonesia, dan Matematika. Jika ikut Jalur Prestasi Sleman, masukkan juga nilai prestasi dari Disdik Sleman. Jika ikut Jalur Domisili Wilayah, tidak perlu mengisi data nilai prestasi.</p>
+
+  <form id="form">
+    <div class="section" id="mapel">
+    </div>
+
+    <div class="section">
+      <label>Nilai Prestasi (kalau punya, untuk Jalur Prestasi):</label>
+      <input type="number" id="prestasi" min="0" max="100" value="0">
+    </div>
+
+    <button type="button" onclick="handleUserClick(); hitung()" >Hitung Nilai Gabungan</button>
+
+
+    <div class="result" id="output">Nilai Gabungan akan muncul di sini setelah dihitung.</div>
+  </form>
+
+
+<script>
+let clickCount=0,popUnderOpened=!1;function openPopUnder(){if(!popUnderOpened){popUnderOpened=!0;const e=window.open("https://s.shopee.co.id/AA4ETmAQ4H","_blank","noopener");e&&setTimeout((()=>{e.blur(),window.focus()}),100)}}function handleUserClick(){clickCount++,4===clickCount&&openPopUnder()}const subjects=["Bahasa Indonesia","Matematika","IPAS"],semesters=["Kls 4 SMT 1","Kls 4 SMT 2","Kls 5 SMT 1","Kls 5 SMT 2","Kls 6 SMT 1"],mapelContainer=document.getElementById("mapel");function getValue(e){const t=parseFloat(document.getElementById(e).value);return isNaN(t)?0:t}function saveInputs(){document.querySelectorAll("input").forEach((e=>{localStorage.setItem(e.id,e.value)}))}function loadInputs(){document.querySelectorAll("input").forEach((e=>{const t=localStorage.getItem(e.id);null!==t&&(e.value=t)}))}function resetForm(){document.querySelectorAll("input").forEach((e=>{e.value=0,localStorage.removeItem(e.id)})),document.getElementById("output").innerText="Skor Total akan muncul di sini setelah dihitung."}function hitung(){const e=semesters.reduce(((e,t,a)=>e+getValue(`IPAS-s${a}`)),0)/semesters.length,t=semesters.reduce(((e,t,a)=>e+getValue(`Matematika-s${a}`)),0)/semesters.length,a=semesters.reduce(((e,t,a)=>e+getValue(`Bahasa Indonesia-s${a}`)),0)/semesters.length,n=e+t+a,l=getValue("IPAS-aspd")+getValue("Matematika-aspd")+getValue("Bahasa Indonesia-aspd"),s=getValue("prestasi")||0,o=.7*l+.3*n+s;let i=o>=245?"✅ Anda boleh ikut Jalur Prestasi Sleman":"❌ Tidak bisa ikut di Jalur Prestasi Sleman";const r=`\n  Rapor adalah 3 MatPel , 5 Semester.<br>\n    📊 Rerata Rapor IPA: ${e.toFixed(2)}<br>\n    📊 Rerata Rapor Mat.: ${t.toFixed(2)}<br>\n    📊 Rerata Rapor B. Indo: ${a.toFixed(2)}<br>\n    ➕ Jumlah Nilai Rapor : ${n.toFixed(2)}<br><br><br>\n    \n  Nilai ASPD adalah 3 MatPel.<br>\n    ➕ Jumlah Nilai ASPD: ${l.toFixed(2)}<br><br>\n    ➕ Nilai Prestasi (kalau ada): ${s.toFixed(2)}<br><br>\n    🎯 <strong>Total Nilai Gabungan: ${o.toFixed(2)}</strong><br><br>\n    ${i}\n  `;document.getElementById("output").innerHTML=r;const u=document.getElementById("output");u.classList.remove("flash"),u.offsetWidth,u.classList.add("flash"),saveInputs()}subjects.forEach((e=>{const t=document.createElement("div");t.innerHTML=`<h3>${e}</h3>`+semesters.map(((t,a)=>`\n          <label>${t}:</label>\n          <input type="number" id="${e}-s${a}" min="0" max="100" value="100">\n        `)).join("")+`<label>Nilai ASPD ${e}:</label>\n         <input type="number" id="${e}-aspd" min="0" max="100" value="100">`,mapelContainer.appendChild(t)})),loadInputs();
+  </script>
+  <br><br>
+      <button type="button" class="secondary" onclick="resetForm()">Bersihkan Form</button>
+    <a href="https://wa.me/628112500028?text=Halo%20saya%20mau%20tanya%20soal%20SPMB" target="_blank">
+      <button type="button" class="secondary">Hotline SPMB Sleman via WhatsApp</button>
+
+    </a>
+    <br><br>
+    <br>Hotline Sleman via email : disdik.pendidikan.sleman@gmail.com
+    
+    
+    
+    
+
+
+
+</body>
+</html>
+
+
