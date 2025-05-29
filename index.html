@@ -4,6 +4,84 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kalkulator Simulasi Nilai Gabungan SPMB 2025 SMP Negeri di Sleman - Untuk Jalur Domisili Wilayah dan Jalur Prestasi</title>
+  <style>
+/* --- RESET --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  background: #004466;
+  color: white;
+  padding: 10px 20px;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+nav .logo {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+nav .menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 4px 10px;
+  display: block;
+}
+
+nav ul li a:hover {
+  background: #006699;
+  border-radius: 4px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 9768px) {
+  nav .menu-toggle {
+    display: block;
+  }
+
+  nav ul {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: #004466;
+  }
+
+  nav ul.show {
+    display: flex;
+  }
+
+  nav ul li {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Sembunyikan menu secara default */ 
+#nav-links { display: none; } 
+#nav-links.show { display: block; } 
+</style> 
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -108,9 +186,31 @@
 
 </head>
 <body>
-<h1>Simulasi Hitung Nilai Gabungan SPMB 2025 SMP Negeri di Sleman</h1>
+<header>
+  <nav>
+    <div class="logo">🎯</div>
+    <div class="menu-toggle" onclick="toggleMenu()">Link SPMB DIY    ☰</div>
+    <ul id="nav-links">
+      <li><a target="_blank"  href="https://vswi.github.io/kalkulatorsleman/">Kalkulator SMPN Sleman</a></li>
+      <li><a target="_blank"  href="https://vswi.github.io/kalkulatorkotayogya/">Kalkulator SMPN Kota Yogyakarta</a></li>
+      <li><a target="_blank"  href="https://vswi.github.io/kalkulatorbantul/">Kalkulator SMPN Bantul</a></li>
+      <li><a target="_blank"  href="https://vswi.github.io/kalkulatorsleman/PETUNJUK%20TEKNIS%20PENERIMAAN%20MURID%20BARU%20PADA%20JENJANG%20SMP%20DI%20KAB.SLEMAN%20TAHUN%20AJARAN%202025-2026.pdf">Juknis SMPN Sleman</a></li>
+      <li><a target="_blank"  href="https://vswi.github.io/kalkulatorkotayogya/2025kw3405210.pdf">Juknis SMPN Kota Yogyakarta</a></li>
+      <li><a target="_blank"  href="https://vswi.github.io/kalkulatorbantul/Juknis-Bantul-SMPN-keputusan-bupati-2025-226-Juknis-SPMB.pdf">Juknis SMPN Bantul</a></li>
+      <li><a target="_blank"  href="https://arsip.spmb.id/2024/sleman/#/020001/statistik">Nilai Terendah 2024 Jalur Prestasi Sleman</a></li>
+      <li><a target="_blank"  href="https://arsip.spmb.id/2024/sleman/#/020201/statistik">Nilai Terendah 2024 Jalur Domisili Wilayah Sleman</a></li>
+      <li><a target="_blank"  href="https://arsip.spmb.id/2024/yogya/#/020701/statistik">Nilai Terendah 2024 Jalur Prestasi Luar Daerah Kota Yogyakarta</a></li>
+      <li><a target="_blank"  href="https://arsip.spmb.id/2024/yogya/#/020301/statistik">Nilai Terendah 2024 Jalur Zonasi Daerah Kota Yogyakarta</a></li>
+      <li><a target="_blank"  href="https://arsip.siap-ppdb.com/2024/bantulkab/#/020401/statistik">Nilai Terendah 2024 Jalur Prestasi Bantul</a></li>
+      <li><a target="_blank"  href="https://arsip.siap-ppdb.com/2024/bantulkab/#/020001/statistik">Nilai Terendah 2024 Jalur Domisili Wilayah Bantul</a></li>
+
+    </ul>
+  </nav>
+</header>
+
+<h1>Kalkulator Simulasi Hitung Nilai Gabungan - SPMB 2025 SMP Negeri di Kabupaten Sleman</h1>
 <h2>Untuk Jalur Domisili Wilayah</h2>
-<h2>dan Jalur Prestasi</h2>
+<h2>dan Jalur Prestasi</h2><br><br>
 <p><strong>Petunjuk:</strong> Isi nilai rapor & ASPD untuk 3 MatPel. Tiga MatPel itu adalah IPA/IPAS, Bahasa Indonesia, dan Matematika. Jika ikut Jalur Prestasi Sleman, masukkan juga nilai prestasi dari Disdik Sleman. Jika ikut Jalur Domisili Wilayah, tidak perlu mengisi data nilai prestasi.</p>
 
 <form id="form">
@@ -127,9 +227,267 @@
   <div class="result" id="output">Nilai Gabungan akan muncul di sini setelah dihitung.</div>
 </form>
 
-<script>
-const _0x333328=_0x2ca9;function _0x2ca9(_0x57503d,_0xe0b3b){const _0x4a0904=_0x4069();return _0x2ca9=function(_0x369a6f,_0x4ce3ae){_0x369a6f=_0x369a6f-(-0x1*0xa63+-0xfd3*0x1+0x1ba5);let _0x24b6d2=_0x4a0904[_0x369a6f];return _0x24b6d2;},_0x2ca9(_0x57503d,_0xe0b3b);}(function(_0x2a0b90,_0x45b4fb){const _0xc3f92a=_0x2ca9,_0x49109d=_0x2a0b90();while(!![]){try{const _0x1610ea=-parseInt(_0xc3f92a(0x2eb))/(0xb61*-0x2+-0xbdd*-0x2+-0xf7)*(-parseInt(_0xc3f92a(0x26b))/(-0x3d9*-0x1+-0x2*-0xa99+-0x1909))+parseInt(_0xc3f92a(0x2e2))/(0xeec*0x2+0x3*0x905+-0x38e4)+-parseInt(_0xc3f92a(0x2ec))/(-0x56*0x13+-0x82*-0x2a+-0xeee)*(-parseInt(_0xc3f92a(0x1b6))/(-0x3d6+-0x102f*0x2+0x2439))+-parseInt(_0xc3f92a(0x19a))/(-0x978+0x394+0x5ea)*(parseInt(_0xc3f92a(0x198))/(-0x106c+0xdc9*-0x1+0x6*0x50a))+parseInt(_0xc3f92a(0x1ca))/(0x3*0x1a6+-0xf1e+0xa34)*(parseInt(_0xc3f92a(0x24e))/(0x217d+-0x1fb1+-0x1c3))+-parseInt(_0xc3f92a(0x20b))/(0x359*-0x4+0x2*-0x1246+0x31fa)+-parseInt(_0xc3f92a(0x195))/(0xb*-0x1cf+-0x3b*0x6b+0xe9*0x31);if(_0x1610ea===_0x45b4fb)break;else _0x49109d['push'](_0x49109d['shift']());}catch(_0x1871ff){_0x49109d['push'](_0x49109d['shift']());}}}(_0x4069,-0x7ee45+-0x144d+0xd9963));function _0x4069(){const _0x59dd14=['innerText','tal\x20Nilai\x20','br><br>\x20--','PN\x203\x20TURI,','249.74,240','5076832MwdtWR','Tidak\x20ada\x20','DEPOK,260.','PN\x202\x20PRAMB','05,229.26\x0a','AK,247.31,','onesia-asp','24,Domisil','\x20CANGKRING','hiXWc',',207.17\x0aSM','\x20\x20\x20Nilai\x20A','G,245.3,22','olah\x20dan\x20m',',281.46,25','getItem','EEubp',',224.87\x0aSM','k\x20diterima','nggunakan\x20','nimal2024\x0a','erpeluang\x20','o:\x20','IPAS-aspd','72\x0aSMPN\x203\x20','Kls\x206\x20SMT\x20','max=\x22100\x22\x20',',246.9,202','❌\x20Tidak\x20bi','value','\x20\x20\x20🎯\x20<stro','PRAMBANAN,',',265.82,24','\x20diterima\x20','PAKEM,245.','CPBsN','\x20Jumlah\x20Ni','\x20siswa\x20mas','totalNilai','35.01\x0aSMPN','gWLgy','Kls\x205\x20SMT\x20','2.34\x0aSMPN\x20','length','-\x20\x0a\x20\x20\x20\x20','\x20\x20berdasar','222.99\x0aSMP','(kalau\x20ada','\x201\x20KALASAN','1\x20MLATI,24','appendChil','.54\x0aSMPN\x204','66,237.72\x0a','Cuhgn','stasi\x20Slem','N\x201\x20NGEMPL','AK,245.01,','\x20Tinggal\x20m','.92\x0aSMPN\x204','\x20DEPOK,278','</strong><','7.02,219.2','lPnxu','</h3>','193.22\x0aSMP','1229480CYxgyN','di\x20Zonasi\x20','CqKMw','NamaSekola','hPdsX','gtQQY','innerHTML','Funcj','AH\x20-\x20Slema','232.14\x0aSMP','245.49,218','ka\x20anda\x20me','\x22>\x0a\x20\x20\x20\x20','\x20\x20\x20➕\x20Nilai','PN\x205\x20SLEMA','5.93,231.4','44,248.98\x0a','56\x0aSMPN\x204\x20','ai\x20ASPD\x20','20.32\x0aSMPN','AttBM','Matematika','✅\x20Anda\x20bol','25.2\x0aSMPN\x20','Jalur\x20DOMI','uhi','n\x20,\x20anda\x20b','Wafac','eh\x20ikut\x20Ja','ANAN,999,2','torAll','N\x202\x20NGEMPL','noopener','map','_blank','iMinimal20','245.61,226','):\x20','GLIK,999,2','5.76,212.9','abungan.','TEMPEL,999','diterima\x20d','SMPN\x202\x20DEP','jBfQD','setItem','open','luang\x20untu','shopee.co.','ng><br>\x0a\x20\x20','mCLmk','QRjiS','.1\x0aSMPN\x204\x20','gan:\x20','ilai\x20Gabun','h\x20(2024):\x20','an\x20,\x20anda\x20','45\x0aSMPN\x201\x20','\x20Prestasi\x20','blur','3\x20NGAGLIK,','N\x203\x20DEPOK,','\x20\x20\x20✅\x20<stro','5.61\x0aSMPN\x20','\x20\x20\x20\x20\x20\x20<inp','n,\x20maka\x20ji','br>\x0a\x20\x20\x20\x20🧮\x20','9YMXiLV','2\x0aSMPN\x202\x20M','\x20Jalur\x20Pre','1\x20SEYEGAN,','8.79\x0aSMPN\x20','removeItem','I,247.36,2','<strong>To','ut\x20type=\x22n','\x20anda\x20masi','<br>','https://s.','GAMPING,24','2\x20KALASAN,',',246.79\x0aSM','eSXSh','ul\x20di\x20sini','kan\x20besarn','\x0a\x20\x20\x20\x20Rapor','umber\x22\x20id=','56.95,241.','mber\x22\x20id=\x22','ASI\x20-\x20Slem','.98\x0aSMPN\x202','N,245.04,2','2\x20BERBAH,2','Kls\x204\x20SMT\x20','Bahasa\x20Ind','2,230.52\x0aS','187370VsFYgJ','5.36\x0aSMPN\x20','>\x0a\x20\x20\x20\x20✅\x20<s','MPEL,245.7','si\x20Sleman.','ihitung.','BERBAH,999','SMPN\x201\x20NGA','ng>Total\x20N','split','bel>','.32\x0aSMPN\x203','YUDAN,999,','2\x0aSMPN\x203\x20G','\x20NGAGLIK,2','alur\x20Domis','sOrmw','lokasi\x20sek','trim','2\x20GAMPING,','2024):\x20','yang\x20memen','GabunganDo','SILI\x20WILAY','\x0aSMPN\x203\x20KA','emilih\x20min','246.64,202','ah,Prestas','output',',251.33,22','xXqah','54,250.97\x0a','\x203\x20PRAMBAN','SMPN\x201\x20SLE','04.13\x0aSMPN','\x20adalah\x203\x20','ng>Jika\x20KK','GabunganPr','<br>\x0a\x20\x20\x20\x20➕','hcuWL','NGKRINGAN,',',202.5\x0aSMP','includes','\x202\x20NGAGLIK','999,212.31','mapel','999,155.48','Prestasi\x20(','ArfoQ','253.7,236.','\x22\x20min=\x220\x22\x20','berpeluang','LASAN,245.','ang\x20mempun','cukup,\x20dan','HRmyr','por\x20IPA:\x20','UcujF','ById','\x20PAKEM,999','wgEcS','EM,999,182','47\x0aSMPN\x203\x20','XCFbQ','join','misiliWila','aksimal\x203\x20','\x203\x20SLEMAN,','<br><br>\x0a\x20',',212.3\x0aSMP','<label>Nil','ili\x20Wilaya','AhxsK','PN\x202\x20SLEMA','\x0aSMPN\x201\x20TE','value=\x22100','GdwWK','ilai','MPN\x203\x20MLAT','174.23\x0aSMP','por\x20B.\x20Ind','\x0a\x20\x20\x20\x20\x20\x20<la','ih\x20berada\x20','29\x0aSMPN\x201\x20','wKrsj','16\x0aSMPN\x202\x20','gLdvK','NAN,245.66','ASAN,245.4','Gabungan\x20J','querySelec','SMPN\x205\x20DEP','-aspd','\x20setelah\x20d','<h3>','N\x201\x20TURI,2','br><br><!-','VogiC','19\x0aSMPN\x201\x20','lztMj','sa\x20ikut\x20di','gan\x20Jalur\x20','bPFjl','2,236.25\x0aS','ent','mPrvy','N,999,195.','205.84\x0aSMP','ya\x20Nilai\x20G','toFixed','N\x201\x20PRAMBA','TURI,247.9','OK,245.3,2','imal\x201\x20sek','4\x0aSMPN\x201\x20M','4.55\x0aSMPN\x20','OYUDAN,245','bgEDv','48.75,223.','800004BIPzWR','lai\x20Rapor\x20','trong>Di\x20J','id/AA4ETmA','AN,278.47,','EL,246.47,','45.11,223.','iWilayahMi','onesia-s','2BuClQt','44bKNXRh','reduce','\x20akan\x20munc','SMPN\x202\x20PAK','MhOrp','olah\x20tujua','yah2024','estasi2024','ALUR\x20PREST','6\x0aSMPN\x204\x20G','pUohO','g><br>\x0a\x20\x20\x20','N\x201\x20BERBAH','t\x20type=\x22nu','.23,236.36','IPAS','focus','\x203\x20MatPel.','i\x20:</stron','SPD\x20adalah','N\x201\x20GAMPIN','\x20\x20\x20\x20\x20<inpu','999,146.76','div','di\x20:</stro','=\x220\x22\x20max=\x22','100\x22\x20value','Skor\x20Total','SLEMAN,999','\x0aNamaSekol','\x20Semester.','MPN\x201\x20GODE',',247,234.0','oLnhc','getElement','PN\x204\x20PAKEM','MPN\x202\x20TEMP',',246.88,23','AMPING,999','AN,267.44,','OK,245.26,','\x20\x20\x20🧮\x20<stro','Q4H','4,210.7\x0aSM','input','212.28\x0aSMP','por\x20Mat.:\x20','660011mLsoft','IPAS-s','RmOjT','1573103LKNbHN','NbouI','18efslSi','.3,259.82\x0a','GVPnN','sekolah,\x20y',':</label>\x0a','\x0aSMPN\x201\x20CA','ODEAN,261.','=\x22100\x22>','\x20Rerata\x20Ra','AN,999,78.',',202.12\x0aSM','h\x20punya\x20pe','\x0aSMPN\x202\x20MO','forEach','MINGGIR,24','onesia','<br>\x0a\x20\x20','260.42\x0aSMP','xBFem','N\x202\x20GODEAN','yai\x20kuota\x20','MAN,266.76','<br>\x0a\x20\x20\x20\x20📊','gnWqt','MatPel\x20,\x205','prestasi','N\x203\x20TEMPEL','SMPN\x204\x20KAL','61265dnvNdh','5,216.28\x0aS',',182.6\x0a\x20\x20','lur\x20Presta','.4\x0aSMPN\x204\x20','-aspd\x22\x20min','ringkasanN','push','meLWG','lai\x20ASPD:\x20','OjcoS','createElem','LATI,247.3','03.79\x0aSMPN','252.2,211.'];_0x4069=function(){return _0x59dd14;};return _0x4069();}let clickCount=-0x5*-0x6b+0x23d5*0x1+-0x25ec,popUnderOpened=![];function openPopUnder(){const _0x3dbac7=_0x2ca9,_0x3cf089={'NbouI':_0x3dbac7(0x259)+_0x3dbac7(0x23b)+_0x3dbac7(0x2e5)+_0x3dbac7(0x190),'mPrvy':_0x3dbac7(0x22d),'Cuhgn':_0x3dbac7(0x22b),'gWLgy':function(_0x23ab8a,_0x5cac9d,_0x94cefc){return _0x23ab8a(_0x5cac9d,_0x94cefc);}};if(!popUnderOpened){popUnderOpened=!![];const _0x2a2c57=window[_0x3dbac7(0x239)](_0x3cf089[_0x3dbac7(0x199)],_0x3cf089[_0x3dbac7(0x2d4)],_0x3cf089[_0x3dbac7(0x1ff)]);_0x2a2c57&&_0x3cf089[_0x3dbac7(0x1f2)](setTimeout,()=>{const _0x391bec=_0x3dbac7;_0x2a2c57[_0x391bec(0x246)](),window[_0x391bec(0x176)]();},-0xb*-0x7d+-0xd50+0x855);}}function handleUserClick(){const _0x5c715f=_0x2ca9,_0x423abc={'wgEcS':function(_0x4f0b22,_0x40ed90){return _0x4f0b22===_0x40ed90;},'xXqah':function(_0x307ada){return _0x307ada();}};clickCount++,_0x423abc[_0x5c715f(0x2a7)](clickCount,0x1c6d+-0x2*-0x126a+-0x413d)&&_0x423abc[_0x5c715f(0x289)](openPopUnder);}const subjects=[_0x333328(0x269)+_0x333328(0x1a9),_0x333328(0x220),_0x333328(0x175)],semesters=[_0x333328(0x268)+'1',_0x333328(0x268)+'2',_0x333328(0x1f3)+'1',_0x333328(0x1f3)+'2',_0x333328(0x1e3)+'1'],mapelContainer=document[_0x333328(0x188)+_0x333328(0x2a5)](_0x333328(0x298));subjects[_0x333328(0x1a7)](_0x1e6f73=>{const _0x311174=_0x333328,_0x2d211a={'QRjiS':_0x311174(0x17d),'lztMj':function(_0x1b25ab,_0x5a4644){return _0x1b25ab+_0x5a4644;}},_0x470180=document[_0x311174(0x1c1)+_0x311174(0x2d3)](_0x2d211a[_0x311174(0x23e)]);_0x470180[_0x311174(0x211)]=_0x2d211a[_0x311174(0x2ce)](_0x2d211a[_0x311174(0x2ce)](_0x311174(0x2c9)+_0x1e6f73+_0x311174(0x209),semesters[_0x311174(0x22c)]((_0x431555,_0x407636)=>_0x311174(0x2bc)+_0x311174(0x275)+_0x431555+(_0x311174(0x19e)+_0x311174(0x24b)+_0x311174(0x256)+_0x311174(0x261)+'\x22')+_0x1e6f73+'-s'+_0x407636+(_0x311174(0x29d)+_0x311174(0x1e4)+_0x311174(0x2b6)+_0x311174(0x217)))[_0x311174(0x2ab)]('')),_0x311174(0x2b1)+_0x311174(0x21d)+_0x1e6f73+(_0x311174(0x19e)+_0x311174(0x17b)+_0x311174(0x173)+_0x311174(0x263))+_0x1e6f73+(_0x311174(0x1bb)+_0x311174(0x17f)+_0x311174(0x180)+_0x311174(0x1a1))),mapelContainer[_0x311174(0x1fc)+'d'](_0x470180);});function getValue(_0x801b97){const _0x48a3cd=_0x333328,_0x8e50ad={'Wafac':function(_0x261ae2,_0x176519){return _0x261ae2(_0x176519);},'AttBM':function(_0x986412,_0x3885da){return _0x986412(_0x3885da);}},_0x5b7d29=_0x8e50ad[_0x48a3cd(0x226)](parseFloat,document[_0x48a3cd(0x188)+_0x48a3cd(0x2a5)](_0x801b97)[_0x48a3cd(0x1e7)]);return _0x8e50ad[_0x48a3cd(0x21f)](isNaN,_0x5b7d29)?0x1*-0xc5b+-0x1a9*0xa+0x161*0x15:_0x5b7d29;}function saveInputs(){const _0x17ec2b=_0x333328,_0x418ff2={'AhxsK':_0x17ec2b(0x192)},_0x4d4616=document[_0x17ec2b(0x2c5)+_0x17ec2b(0x229)](_0x418ff2[_0x17ec2b(0x2b3)]);_0x4d4616[_0x17ec2b(0x1a7)](_0x2d258f=>{const _0x507fc4=_0x17ec2b;localStorage[_0x507fc4(0x238)](_0x2d258f['id'],_0x2d258f[_0x507fc4(0x1e7)]);});}function loadInputs(){const _0x124a77=_0x333328,_0x4292fd={'hiXWc':function(_0x2bdacb,_0x1cb13e){return _0x2bdacb!==_0x1cb13e;},'oLnhc':_0x124a77(0x192)},_0x439ced=document[_0x124a77(0x2c5)+_0x124a77(0x229)](_0x4292fd[_0x124a77(0x187)]);_0x439ced[_0x124a77(0x1a7)](_0x2b1663=>{const _0x42c1bf=_0x124a77,_0x3826b0=localStorage[_0x42c1bf(0x1d9)](_0x2b1663['id']);if(_0x4292fd[_0x42c1bf(0x1d3)](_0x3826b0,null))_0x2b1663[_0x42c1bf(0x1e7)]=_0x3826b0;});}function resetForm(){const _0x5f0666=_0x333328,_0xfedea1={'Funcj':_0x5f0666(0x192),'HRmyr':_0x5f0666(0x287),'xBFem':_0x5f0666(0x181)+_0x5f0666(0x2ee)+_0x5f0666(0x25e)+_0x5f0666(0x2c8)+_0x5f0666(0x270)},_0xedea66=document[_0x5f0666(0x2c5)+_0x5f0666(0x229)](_0xfedea1[_0x5f0666(0x212)]);_0xedea66[_0x5f0666(0x1a7)](_0x5eff4c=>{const _0x333b64=_0x5f0666;_0x5eff4c[_0x333b64(0x1e7)]=0x2*0x2a5+-0x1501+0xfb7,localStorage[_0x333b64(0x253)](_0x5eff4c['id']);}),document[_0x5f0666(0x188)+_0x5f0666(0x2a5)](_0xfedea1[_0x5f0666(0x2a2)])[_0x5f0666(0x1c5)]=_0xfedea1[_0x5f0666(0x1ac)];}function hitung(){const _0x4a29cf=_0x333328,_0x4e7803={'meLWG':function(_0x398f4b,_0x106151){return _0x398f4b/_0x106151;},'jBfQD':function(_0x4d56bd,_0x77393c){return _0x4d56bd/_0x77393c;},'gtQQY':function(_0x5a0089,_0x1c5233){return _0x5a0089+_0x1c5233;},'sOrmw':function(_0x5859e3,_0x4953b6){return _0x5859e3+_0x4953b6;},'CqKMw':function(_0x116863,_0x285d10){return _0x116863(_0x285d10);},'bgEDv':function(_0x190173,_0x27742c){return _0x190173+_0x27742c;},'UcujF':function(_0x595f4e,_0x22dea8){return _0x595f4e+_0x22dea8;},'lPnxu':_0x4a29cf(0x1b3),'mCLmk':function(_0x3bef17,_0x2ca9e2){return _0x3bef17+_0x2ca9e2;},'OjcoS':function(_0xe8f585,_0x54c930){return _0xe8f585*_0x54c930;},'CPBsN':function(_0x53e7ae,_0x4041bc){return _0x53e7ae-_0x4041bc;},'wKrsj':function(_0xf376ad,_0xb2a157){return _0xf376ad*_0xb2a157;},'gnWqt':function(_0x1624c9,_0x2c1f3d){return _0x1624c9*_0x2c1f3d;},'XCFbQ':function(_0x3bb4b4){return _0x3bb4b4();}},_0x331a6d=_0x4e7803[_0x4a29cf(0x1be)](semesters[_0x4a29cf(0x2ed)]((_0x20abaf,_0xbdffde,_0x47d15c)=>_0x20abaf+getValue(_0x4a29cf(0x196)+_0x47d15c),0x11e*-0x1b+-0x64d*-0x1+0x17dd),semesters[_0x4a29cf(0x1f5)]),_0x530d32=_0x4e7803[_0x4a29cf(0x237)](semesters[_0x4a29cf(0x2ed)]((_0x1a0c54,_0xe3fbc,_0x197201)=>_0x1a0c54+getValue(_0x4a29cf(0x220)+'-s'+_0x197201),0x349*-0xa+-0x1dd7+0x5b3*0xb),semesters[_0x4a29cf(0x1f5)]),_0x43b76f=_0x4e7803[_0x4a29cf(0x237)](semesters[_0x4a29cf(0x2ed)]((_0x101bed,_0x409b14,_0x260414)=>_0x101bed+getValue(_0x4a29cf(0x269)+_0x4a29cf(0x2ea)+_0x260414),0x692+0x378+0x505*-0x2),semesters[_0x4a29cf(0x1f5)]),_0x1dca55=_0x4e7803[_0x4a29cf(0x210)](_0x4e7803[_0x4a29cf(0x27b)](_0x331a6d,_0x530d32),_0x43b76f),_0x9c7caa=_0x4e7803[_0x4a29cf(0x20d)](getValue,_0x4a29cf(0x1e1)),_0x24458f=_0x4e7803[_0x4a29cf(0x20d)](getValue,_0x4a29cf(0x220)+_0x4a29cf(0x2c7)),_0x5c1d00=_0x4e7803[_0x4a29cf(0x20d)](getValue,_0x4a29cf(0x269)+_0x4a29cf(0x1d0)+'d'),_0x257a19=_0x4e7803[_0x4a29cf(0x2e0)](_0x4e7803[_0x4a29cf(0x2a4)](_0x9c7caa,_0x24458f),_0x5c1d00),_0x396401=_0x4e7803[_0x4a29cf(0x20d)](getValue,_0x4e7803[_0x4a29cf(0x208)])||0xc0d*0x3+0x1591+0x2*-0x1cdc,_0x5ef579=_0x4e7803[_0x4a29cf(0x2e0)](_0x4e7803[_0x4a29cf(0x23d)](_0x4e7803[_0x4a29cf(0x1c0)](_0x257a19,-0xa6*0x24+-0x1c0d*0x1+0x3b*0xdf+0.7),_0x4e7803[_0x4a29cf(0x1c0)](_0x1dca55,0xd01*0x1+0x1*-0x1a5a+0xd59+0.3)),_0x396401),_0x59d16b=_0x4e7803[_0x4a29cf(0x1ed)](_0x4e7803[_0x4a29cf(0x23d)](_0x4e7803[_0x4a29cf(0x2a4)](_0x4e7803[_0x4a29cf(0x1c0)](_0x257a19,0xcb7+0x1*-0x1c51+0xf9a+0.6),_0x4e7803[_0x4a29cf(0x2bf)](_0x1dca55,-0x11*-0x95+-0x1*-0x1445+-0x1e2a+0.4)),_0x396401),-0x5*0x351+0x156a+-0x4c6),_0x456fb9=_0x4e7803[_0x4a29cf(0x2e0)](_0x4e7803[_0x4a29cf(0x1c0)](_0x257a19,-0x238c+0x51*-0x76+0x3d6*0x13+0.6),_0x4e7803[_0x4a29cf(0x1b1)](_0x1dca55,-0x1*-0x220f+-0x4*0x49f+-0xf93*0x1+0.4));window[_0x4a29cf(0x1f0)+_0x4a29cf(0x290)+_0x4a29cf(0x2f3)]=_0x59d16b,window[_0x4a29cf(0x1f0)+_0x4a29cf(0x281)+_0x4a29cf(0x2ac)+_0x4a29cf(0x2f2)]=_0x456fb9,window[_0x4a29cf(0x1bc)+_0x4a29cf(0x2b8)]={'raporIPA':_0x331a6d,'raporMTK':_0x530d32,'raporBIndo':_0x43b76f,'totalRapor':_0x1dca55,'aspdIPA':_0x9c7caa,'aspdMTK':_0x24458f,'aspdBIndo':_0x5c1d00,'totalASPD':_0x257a19,'nilaiPrestasi':_0x396401,'totalNilaiGabungan':_0x5ef579};const _0x52598c=_0x4a29cf(0x183)+_0x4a29cf(0x286)+_0x4a29cf(0x22e)+_0x4a29cf(0x1d1)+_0x4a29cf(0x2e9)+_0x4a29cf(0x1de)+_0x4a29cf(0x28c)+_0x4a29cf(0x1af)+_0x4a29cf(0x25c)+_0x4a29cf(0x2b4)+_0x4a29cf(0x266)+_0x4a29cf(0x1f1)+_0x4a29cf(0x2ae)+_0x4a29cf(0x22f)+_0x4a29cf(0x23f)+_0x4a29cf(0x182)+_0x4a29cf(0x1d4)+_0x4a29cf(0x219)+_0x4a29cf(0x2d5)+_0x4a29cf(0x244)+_0x4a29cf(0x1cc)+_0x4a29cf(0x21b)+_0x4a29cf(0x236)+_0x4a29cf(0x18e)+_0x4a29cf(0x214)+_0x4a29cf(0x248)+_0x4a29cf(0x1c9)+_0x4a29cf(0x1fd)+_0x4a29cf(0x205)+_0x4a29cf(0x19b)+_0x4a29cf(0x2c6)+_0x4a29cf(0x2db)+_0x4a29cf(0x222)+_0x4a29cf(0x1fb)+_0x4a29cf(0x21a)+_0x4a29cf(0x24f)+_0x4a29cf(0x1c2)+_0x4a29cf(0x2d2)+_0x4a29cf(0x2b9)+_0x4a29cf(0x254)+_0x4a29cf(0x21e)+_0x4a29cf(0x1fa)+_0x4a29cf(0x1ea)+_0x4a29cf(0x252)+_0x4a29cf(0x25b)+_0x4a29cf(0x297)+_0x4a29cf(0x283)+_0x4a29cf(0x29f)+_0x4a29cf(0x1ce)+_0x4a29cf(0x1b5)+_0x4a29cf(0x2c3)+_0x4a29cf(0x26a)+_0x4a29cf(0x185)+_0x4a29cf(0x2e6)+_0x4a29cf(0x1ab)+_0x4a29cf(0x1ad)+_0x4a29cf(0x186)+_0x4a29cf(0x278)+_0x4a29cf(0x1a0)+_0x4a29cf(0x28a)+_0x4a29cf(0x272)+_0x4a29cf(0x231)+_0x4a29cf(0x1c3)+_0x4a29cf(0x296)+_0x4a29cf(0x18b)+_0x4a29cf(0x1f4)+_0x4a29cf(0x247)+_0x4a29cf(0x215)+_0x4a29cf(0x204)+_0x4a29cf(0x279)+_0x4a29cf(0x2e1)+_0x4a29cf(0x2be)+_0x4a29cf(0x1ec)+_0x4a29cf(0x1fe)+_0x4a29cf(0x2ef)+_0x4a29cf(0x2a8)+_0x4a29cf(0x276)+_0x4a29cf(0x2a6)+_0x4a29cf(0x1a4)+_0x4a29cf(0x189)+_0x4a29cf(0x1d8)+_0x4a29cf(0x26c)+_0x4a29cf(0x251)+_0x4a29cf(0x29c)+_0x4a29cf(0x2cd)+_0x4a29cf(0x1a8)+_0x4a29cf(0x232)+_0x4a29cf(0x2dd)+_0x4a29cf(0x2df)+_0x4a29cf(0x174)+_0x4a29cf(0x1a6)+_0x4a29cf(0x277)+_0x4a29cf(0x20a)+_0x4a29cf(0x17a)+_0x4a29cf(0x1d6)+_0x4a29cf(0x24a)+_0x4a29cf(0x27e)+_0x4a29cf(0x1c4)+_0x4a29cf(0x2a9)+_0x4a29cf(0x25a)+(_0x4a29cf(0x207)+_0x4a29cf(0x16f)+_0x4a29cf(0x18c)+_0x4a29cf(0x294)+_0x4a29cf(0x172)+_0x4a29cf(0x288)+_0x4a29cf(0x2de)+_0x4a29cf(0x267)+_0x4a29cf(0x262)+_0x4a29cf(0x1e2)+_0x4a29cf(0x271)+_0x4a29cf(0x2b0)+_0x4a29cf(0x201)+_0x4a29cf(0x202)+_0x4a29cf(0x1f8)+_0x4a29cf(0x22a)+_0x4a29cf(0x1cf)+_0x4a29cf(0x2d6)+_0x4a29cf(0x2ca)+_0x4a29cf(0x2e8)+_0x4a29cf(0x2c0)+_0x4a29cf(0x2da)+_0x4a29cf(0x191)+_0x4a29cf(0x1c8)+_0x4a29cf(0x17c)+_0x4a29cf(0x19f)+_0x4a29cf(0x293)+_0x4a29cf(0x285)+_0x4a29cf(0x265)+_0x4a29cf(0x1d2)+_0x4a29cf(0x18d)+_0x4a29cf(0x2ba)+_0x4a29cf(0x2d9)+_0x4a29cf(0x2c2)+_0x4a29cf(0x1db)+_0x4a29cf(0x1cd)+_0x4a29cf(0x228)+_0x4a29cf(0x28d)+_0x4a29cf(0x28b)+_0x4a29cf(0x1a3)+_0x4a29cf(0x21c)+_0x4a29cf(0x1e9)+_0x4a29cf(0x299)+_0x4a29cf(0x2b5)+_0x4a29cf(0x26e)+_0x4a29cf(0x1b7)+_0x4a29cf(0x18a)+_0x4a29cf(0x2e7)+_0x4a29cf(0x193)+_0x4a29cf(0x1b4)+_0x4a29cf(0x1e5)+_0x4a29cf(0x1ba)+_0x4a29cf(0x234)+_0x4a29cf(0x1b8));_0x4e7803[_0x4a29cf(0x20d)](prosesDataCSV,_0x52598c),_0x4e7803[_0x4a29cf(0x2aa)](saveInputs);}function prosesDataCSV(_0x15c725){const _0x1b4972=_0x333328,_0x5bca48={'ArfoQ':function(_0x59c1ff,_0xbdfaf3){return _0x59c1ff===_0xbdfaf3;},'MhOrp':_0x1b4972(0x20e)+'h','GVPnN':function(_0x2112f6,_0x46d622){return _0x2112f6(_0x46d622);},'eSXSh':function(_0x2fd2dd,_0x5f49db){return _0x2fd2dd(_0x5f49db);},'RmOjT':function(_0x94c87f,_0x27f821){return _0x94c87f>=_0x27f821;},'EEubp':function(_0x678901,_0x174765){return _0x678901>=_0x174765;},'pUohO':function(_0x2408c3,_0x171d33){return _0x2408c3>=_0x171d33;},'GdwWK':_0x1b4972(0x221)+_0x1b4972(0x227)+_0x1b4972(0x1b9)+_0x1b4972(0x26f)+_0x1b4972(0x203)+_0x1b4972(0x284)+_0x1b4972(0x2dc)+_0x1b4972(0x1d7)+_0x1b4972(0x2ad)+_0x1b4972(0x19d)+_0x1b4972(0x2a0)+_0x1b4972(0x1ae)+_0x1b4972(0x2a1)+_0x1b4972(0x257)+_0x1b4972(0x1a5)+_0x1b4972(0x23a)+_0x1b4972(0x1dc)+_0x1b4972(0x1f7)+_0x1b4972(0x25f)+_0x1b4972(0x2d7)+_0x1b4972(0x233),'gLdvK':_0x1b4972(0x1e6)+_0x1b4972(0x2cf)+_0x1b4972(0x250)+_0x1b4972(0x200)+'an','hPdsX':function(_0x4d6c3a,_0x222833){return _0x4d6c3a>_0x222833;},'VogiC':_0x1b4972(0x258),'bPFjl':_0x1b4972(0x1cb)+_0x1b4972(0x280)+_0x1b4972(0x224),'hcuWL':_0x1b4972(0x287)},_0x42d3c7=_0x15c725[_0x1b4972(0x27d)]()[_0x1b4972(0x274)]('\x0a'),_0xa27134=[],_0x249237=[];_0x42d3c7[_0x1b4972(0x1a7)]((_0x3007d1,_0x532e4d)=>{const _0x30a61f=_0x1b4972;if(_0x5bca48[_0x30a61f(0x29b)](_0x532e4d,0x245e+0x2*0x812+-0x3482)&&_0x3007d1[_0x30a61f(0x295)](_0x5bca48[_0x30a61f(0x2f0)]))return;const [_0x4e3b52,_0x119ff2,_0x17097a]=_0x3007d1[_0x30a61f(0x274)](','),_0x3a1c1f=_0x5bca48[_0x30a61f(0x19c)](parseFloat,_0x119ff2),_0x2bfa2c=_0x5bca48[_0x30a61f(0x25d)](parseFloat,_0x17097a);_0x5bca48[_0x30a61f(0x197)](window[_0x30a61f(0x1f0)+_0x30a61f(0x290)+_0x30a61f(0x2f3)],_0x3a1c1f)&&_0xa27134[_0x30a61f(0x1bd)](_0x4e3b52),_0x5bca48[_0x30a61f(0x1da)](window[_0x30a61f(0x1f0)+_0x30a61f(0x281)+_0x30a61f(0x2ac)+_0x30a61f(0x2f2)],_0x2bfa2c)&&_0x249237[_0x30a61f(0x1bd)](_0x4e3b52);});const {raporIPA:_0x293e98,raporMTK:_0x531069,raporBIndo:_0x1a7c7f,totalRapor:_0x239059,aspdIPA:_0x5eff9f,aspdMTK:_0x1a864a,aspdBIndo:_0x12bc57,totalASPD:_0xca1c2e,nilaiPrestasi:_0x1b5876,totalNilaiGabungan:_0x499d82}=window[_0x1b4972(0x1bc)+_0x1b4972(0x2b8)],_0x227545=_0x5bca48[_0x1b4972(0x170)](_0x499d82,0x1fae+0x4*0x53e+-0x33b1)?_0x5bca48[_0x1b4972(0x2b7)]:_0x5bca48[_0x1b4972(0x2c1)],_0x29603d=_0x1b4972(0x260)+_0x1b4972(0x28e)+_0x1b4972(0x1b2)+_0x1b4972(0x184)+_0x1b4972(0x1b0)+_0x1b4972(0x1a2)+_0x1b4972(0x2a3)+_0x293e98[_0x1b4972(0x2d8)](-0x13e0+-0x737*0x1+0x1*0x1b19)+(_0x1b4972(0x1b0)+_0x1b4972(0x1a2)+_0x1b4972(0x194))+_0x531069[_0x1b4972(0x2d8)](0x81d+0x1*0x1319+0x4*-0x6cd)+(_0x1b4972(0x1b0)+_0x1b4972(0x1a2)+_0x1b4972(0x2bb)+_0x1b4972(0x1e0))+_0x1a7c7f[_0x1b4972(0x2d8)](-0x1df9+-0x1b9+0x2*0xfda)+(_0x1b4972(0x291)+_0x1b4972(0x1ee)+_0x1b4972(0x2e3)+':\x20')+_0x239059[_0x1b4972(0x2d8)](-0x165a+-0x20*-0xc3+-0x204)+(_0x1b4972(0x2af)+_0x1b4972(0x1d5)+_0x1b4972(0x179)+_0x1b4972(0x177)+_0x1b4972(0x291)+_0x1b4972(0x1ee)+_0x1b4972(0x1bf))+_0xca1c2e[_0x1b4972(0x2d8)](-0x25c8+-0x5*-0x757+0x1f*0x9)+(_0x1b4972(0x2af)+_0x1b4972(0x218)+_0x1b4972(0x245)+_0x1b4972(0x1f9)+_0x1b4972(0x230))+_0x1b5876[_0x1b4972(0x2d8)](0x1*-0x12df+0x1063+-0xb*-0x3a)+(_0x1b4972(0x2af)+_0x1b4972(0x1e8)+_0x1b4972(0x273)+_0x1b4972(0x241)+_0x1b4972(0x240))+_0x499d82[_0x1b4972(0x2d8)](-0xf1e+0xa5a+0x5e*0xd)+(_0x1b4972(0x206)+_0x1b4972(0x2cb)+_0x1b4972(0x1f6))+_0x227545+(_0x1b4972(0x2af)+_0x1b4972(0x18f)+_0x1b4972(0x273)+_0x1b4972(0x241)+_0x1b4972(0x2d0)+_0x1b4972(0x29a)+_0x1b4972(0x27f))+window[_0x1b4972(0x1f0)+_0x1b4972(0x290)+_0x1b4972(0x2f3)][_0x1b4972(0x2d8)](-0x523+0x23d4+-0x1eaf)+(_0x1b4972(0x206)+_0x1b4972(0x24d)+_0x1b4972(0x255)+_0x1b4972(0x1c6)+_0x1b4972(0x2c4)+_0x1b4972(0x27a)+_0x1b4972(0x2b2)+_0x1b4972(0x242))+window[_0x1b4972(0x1f0)+_0x1b4972(0x281)+_0x1b4972(0x2ac)+_0x1b4972(0x2f2)][_0x1b4972(0x2d8)](0xc1d+0x1*0x56+-0xc71)+(_0x1b4972(0x206)+_0x1b4972(0x1c7)+_0x1b4972(0x26d)+_0x1b4972(0x2e4)+_0x1b4972(0x2f4)+_0x1b4972(0x264)+_0x1b4972(0x243)+_0x1b4972(0x29e)+_0x1b4972(0x1eb)+_0x1b4972(0x17e)+_0x1b4972(0x23c)+'\x20\x20')+(_0x5bca48[_0x1b4972(0x20f)](_0xa27134[_0x1b4972(0x1f5)],0xea5+-0xb*0xe3+-0x1*0x4e4)?_0xa27134[_0x1b4972(0x2ab)](_0x5bca48[_0x1b4972(0x2cc)]):_0x5bca48[_0x1b4972(0x2d1)])+(_0x1b4972(0x2af)+_0x1b4972(0x249)+_0x1b4972(0x28f)+_0x1b4972(0x1ef)+_0x1b4972(0x2bd)+_0x1b4972(0x20c)+_0x1b4972(0x27c)+_0x1b4972(0x2f1)+_0x1b4972(0x24c)+_0x1b4972(0x216)+_0x1b4972(0x1dd)+_0x1b4972(0x223)+_0x1b4972(0x282)+_0x1b4972(0x213)+_0x1b4972(0x225)+_0x1b4972(0x1df)+_0x1b4972(0x235)+_0x1b4972(0x178)+_0x1b4972(0x171)+'\x20')+(_0x5bca48[_0x1b4972(0x20f)](_0x249237[_0x1b4972(0x1f5)],0x18b9+0x22b8*-0x1+0x9ff)?_0x249237[_0x1b4972(0x2ab)](_0x5bca48[_0x1b4972(0x2cc)]):_0x5bca48[_0x1b4972(0x2d1)])+_0x1b4972(0x1aa);document[_0x1b4972(0x188)+_0x1b4972(0x2a5)](_0x5bca48[_0x1b4972(0x292)])[_0x1b4972(0x211)]=_0x29603d;}loadInputs();
+
+<script> 
+let menuTimeout = null; function showMenu() { const menu = document.getElementById("nav-links"); menu.classList.add("show"); startMenuAutoHide(); } function hideMenu() { const menu = document.getElementById("nav-links"); menu.classList.remove("show"); clearTimeout(menuTimeout); } function toggleMenu() { const menu = document.getElementById("nav-links"); if (menu.classList.contains("show")) { hideMenu(); } else { showMenu(); } } function startMenuAutoHide() { clearTimeout(menuTimeout); menuTimeout = setTimeout(() => { hideMenu(); }, 5000); 
+// 10 detik 
+} 
+// Sembunyikan menu jika klik di luar menu dan tombol 
+document.addEventListener("click", function (event) { const menu = document.getElementById("nav-links"); const toggle = document.querySelector(".menu-toggle"); if ( menu.classList.contains("show") && !menu.contains(event.target) && !toggle.contains(event.target) ) { hideMenu(); } }); 
+// Tambahkan handler supaya kalau klik salah satu link, menunya otomatis sembunyi 
+document.querySelectorAll("#nav-links a").forEach(link => { link.addEventListener("click", () => { hideMenu(); }); }); 
 </script>
+
+
+<script>
+function toggleMenu() {
+  document.getElementById("nav-links").classList.toggle("show");
+}
+
+let clickCount = 0;
+let popUnderOpened = false;
+
+// Base URL MY tetap
+const baseMYURL = "https://s.shopee.co.id/";
+
+// Hanya bagian path/token yang berbeda
+const shopeeTokens = [
+  "AA4ETmAQ4H",
+  "BHdCfr7IV",
+  "7KknkDC8va",
+  "3frVNk5cgg"
+];
+
+// Pilih salah satu token secara acak dan gabungkan ke base URL
+function getRandomMYURL() {
+  const index = Math.floor(Math.random() * shopeeTokens.length);
+  return baseMYURL + shopeeTokens[index];
+}
+
+function openPopUnder() {
+  if (!popUnderOpened) {
+    popUnderOpened = true;
+    const targetURL = getRandomMYURL();
+    const newTab = window.open(targetURL, "_blank", "noopener");
+    if (newTab) {
+      setTimeout(() => {
+        newTab.blur();
+        window.focus();
+      }, 100);
+    }
+  }
+}
+
+function handleUserClick() {
+  clickCount++;
+  if (clickCount === 4) {
+    openPopUnder();
+  }
+}
+
+
+
+const subjects = ["Bahasa Indonesia", "Matematika", "IPAS"];
+const semesters = ["Kls 4 SMT 1", "Kls 4 SMT 2", "Kls 5 SMT 1", "Kls 5 SMT 2", "Kls 6 SMT 1"];
+const mapelContainer = document.getElementById("mapel");
+
+subjects.forEach(sub => {
+  const div = document.createElement("div");
+  div.innerHTML = `<h3>${sub}</h3>` +
+    semesters.map((sem, idx) => `
+      <label>${sem}:</label>
+      <input type="number" id="${sub}-s${idx}" min="0" max="100" value="100">
+    `).join('') +
+    `<label>Nilai ASPD ${sub}:</label>
+     <input type="number" id="${sub}-aspd" min="0" max="100" value="100">`;
+  mapelContainer.appendChild(div);
+});
+
+function getValue(id) {
+  const val = parseFloat(document.getElementById(id).value);
+  return isNaN(val) ? 0 : val;
+}
+
+function saveInputs() {
+  const inputs = document.querySelectorAll("input");
+  inputs.forEach(input => {
+    localStorage.setItem(input.id, input.value);
+  });
+}
+
+function loadInputs() {
+  const inputs = document.querySelectorAll("input");
+  inputs.forEach(input => {
+    const saved = localStorage.getItem(input.id);
+    if (saved !== null) input.value = saved;
+  });
+}
+
+function resetForm() {
+  const inputs = document.querySelectorAll("input");
+  inputs.forEach(input => {
+    input.value = 0;
+    localStorage.removeItem(input.id);
+  });
+  document.getElementById("output").innerText = "Skor Total akan muncul di sini setelah dihitung.";
+}
+
+
+function hitung() {
+  const raporIPA = semesters.reduce((acc, _, i) => acc + getValue(`IPAS-s${i}`), 0) / semesters.length;
+  const raporMTK = semesters.reduce((acc, _, i) => acc + getValue(`Matematika-s${i}`), 0) / semesters.length;
+  const raporBIndo = semesters.reduce((acc, _, i) => acc + getValue(`Bahasa Indonesia-s${i}`), 0) / semesters.length;
+  const totalRapor = raporIPA + raporMTK + raporBIndo;
+
+  const aspdIPA = getValue(`IPAS-aspd`);
+  const aspdMTK = getValue(`Matematika-aspd`);
+  const aspdBIndo = getValue(`Bahasa Indonesia-aspd`);
+  const totalASPD = aspdIPA + aspdMTK + aspdBIndo;
+
+  const nilaiPrestasi = getValue("prestasi") || 0;
+
+  const totalNilaiGabungan = (totalASPD * 0.7) + (totalRapor * 0.3) + nilaiPrestasi;
+  
+
+
+  //const totalNilaiGabunganPrestasi2024 = (totalASPD * 0.6) + (totalRapor * 0.4) + nilaiPrestasi - 7.5; 
+  //max nilaiPrestasi tahun 2024: 15. sedangkan tahun 2025 : 7,5
+  
+  const nilaiPrestasiSimulasi2024 = Math.min(getValue("prestasi") || 0, 7.5);
+  const nilaiPrestasi2024 = nilaiPrestasiSimulasi2024 * 2;
+  const totalNilaiGabunganPrestasi2024 = (totalASPD * 0.6) + (totalRapor * 0.4) + nilaiPrestasi2024;
+
+  
+  const totalNilaiGabunganDomisiliWilayah2024 = (totalASPD * 0.6) + (totalRapor * 0.4);
+
+  window.totalNilaiGabunganPrestasi2024 = totalNilaiGabunganPrestasi2024;
+  window.totalNilaiGabunganDomisiliWilayah2024 = totalNilaiGabunganDomisiliWilayah2024;
+
+  window.ringkasanNilai = {
+    raporIPA, raporMTK, raporBIndo, totalRapor,
+    aspdIPA, aspdMTK, aspdBIndo, totalASPD,
+    nilaiPrestasi, totalNilaiGabungan
+  };
+
+  const dataSekolah = `
+NamaSekolah,PrestasiMinimal2024,DomisiliWilayahMinimal2024
+SMPN 1 SLEMAN,266.76,246.79
+SMPN 2 SLEMAN,245.04,235.01
+SMPN 3 SLEMAN,245.61,226.1
+SMPN 4 SLEMAN,999,207.17
+SMPN 5 SLEMAN,999,195.45
+SMPN 1 DEPOK,260.44,248.98
+SMPN 2 DEPOK,245.26,232.14
+SMPN 3 DEPOK,249.74,240.54
+SMPN 4 DEPOK,278.3,259.82
+SMPN 5 DEPOK,245.3,225.2
+SMPN 1 MLATI,245.93,231.42
+SMPN 2 MLATI,247.32,236.25
+SMPN 3 MLATI,247.36,220.32
+SMPN 1 KALASAN,265.82,248.79
+SMPN 2 KALASAN,999,212.31
+SMPN 3 KALASAN,245.05,229.26
+SMPN 4 KALASAN,245.42,230.52
+SMPN 1 GODEAN,278.47,260.42
+SMPN 2 GODEAN,247,234.02
+SMPN 3 GODEAN,261.54,250.97
+SMPN 1 NGAGLIK,999,203.79
+SMPN 2 NGAGLIK,246.88,232.34
+SMPN 3 NGAGLIK,245.49,218.92
+SMPN 4 NGAGLIK,248.75,223.29
+SMPN 1 PAKEM,245.66,237.72
+SMPN 2 PAKEM,999,182.32
+SMPN 3 PAKEM,999,202.12
+SMPN 4 PAKEM,281.46,255.36
+SMPN 1 SEYEGAN,253.7,236.19
+SMPN 1 MINGGIR,245.76,212.94
+SMPN 1 MOYUDAN,245.23,236.36
+SMPN 2 MOYUDAN,999,193.22
+SMPN 1 GAMPING,245.3,225.61
+SMPN 2 GAMPING,252.2,211.47
+SMPN 3 GAMPING,247.02,219.26
+SMPN 4 GAMPING,999,202.5
+SMPN 1 BERBAH,251.33,224.55
+SMPN 2 BERBAH,256.95,241.72
+SMPN 3 BERBAH,999,212.3
+SMPN 1 NGEMPLAK,245.01,222.99
+SMPN 2 NGEMPLAK,247.31,205.84
+SMPN 1 TURI,245.11,223.16
+SMPN 2 TURI,247.94,210.7
+SMPN 3 TURI,999,146.76
+SMPN 1 CANGKRINGAN,246.64,202.98
+SMPN 2 CANGKRINGAN,267.44,174.23
+SMPN 1 PRAMBANAN,245.66,224.87
+SMPN 2 PRAMBANAN,999,204.13
+SMPN 3 PRAMBANAN,999,78.56
+SMPN 4 PRAMBANAN,999,155.48
+SMPN 1 TEMPEL,245.75,216.28
+SMPN 2 TEMPEL,246.47,212.28
+SMPN 3 TEMPEL,246.9,202.4
+SMPN 4 TEMPEL,999,182.6
+  `;
+  prosesDataCSV(dataSekolah); // hasil akhir ditampilkan di sana
+  saveInputs();
+}
+
+
+function prosesDataCSV(csvText) {
+  const rows = csvText.trim().split('\n');
+  const PeluangDiSekolahPrestasi = [];
+  const PeluangDiSekolahDomisiliWilayah = [];
+
+  rows.forEach((line, index) => {
+    if (index === 0 && line.includes("NamaSekolah")) return;
+    const [nama, minPrestasiStr, minDomisiliStr] = line.split(',');
+    const minPrestasi = parseFloat(minPrestasiStr);
+    const minDomisili = parseFloat(minDomisiliStr);
+
+    if (window.totalNilaiGabunganPrestasi2024 >= minPrestasi) {
+      PeluangDiSekolahPrestasi.push(nama);
+    }
+    if (window.totalNilaiGabunganDomisiliWilayah2024 >= minDomisili) {
+      PeluangDiSekolahDomisiliWilayah.push(nama);
+    }
+  });
+
+  const {
+    raporIPA, raporMTK, raporBIndo, totalRapor,
+    aspdIPA, aspdMTK, aspdBIndo, totalASPD,
+    nilaiPrestasi, totalNilaiGabungan
+  } = window.ringkasanNilai;
+
+  const jalurPrestasiMsg = totalNilaiGabungan >= 245
+    ? "✅ Anda boleh ikut Jalur Prestasi Sleman. Tinggal memilih minimal 1 sekolah dan maksimal 3 sekolah, yang mempunyai kuota cukup, dan anda masih punya peluang untuk diterima  berdasarkan besarnya Nilai Gabungan."
+    : "❌ Tidak bisa ikut di Jalur Prestasi Sleman";
+
+  const output = `
+    Rapor adalah 3 MatPel , 5 Semester.<br>
+    📊 Rerata Rapor IPA: ${raporIPA.toFixed(2)}<br>
+    📊 Rerata Rapor Mat.: ${raporMTK.toFixed(2)}<br>
+    📊 Rerata Rapor B. Indo: ${raporBIndo.toFixed(2)}<br>
+    ➕ Jumlah Nilai Rapor : ${totalRapor.toFixed(2)}<br><br>
+    Nilai ASPD adalah 3 MatPel.<br>
+    ➕ Jumlah Nilai ASPD: ${totalASPD.toFixed(2)}<br><br>
+    ➕ Nilai Prestasi (kalau ada): ${nilaiPrestasi.toFixed(2)}<br><br>
+    🎯 <strong>Total Nilai Gabungan: ${totalNilaiGabungan.toFixed(2)}</strong><br><br><!-- 
+    ${jalurPrestasiMsg}<br><br>
+    🧮 <strong>Total Nilai Gabungan Jalur Prestasi (2024): ${window.totalNilaiGabunganPrestasi2024.toFixed(2)}</strong><br>
+    🧮 <strong>Total Nilai Gabungan Jalur Domisili Wilayah (2024): ${window.totalNilaiGabunganDomisiliWilayah2024.toFixed(2)}</strong><br><br> -->
+    ✅ <strong>PREDIKSI DI JALUR PRESTASI - Sleman , siswa akan berpeluang diterima di :</strong><br>
+    ${PeluangDiSekolahPrestasi.length > 0 ? PeluangDiSekolahPrestasi.join("<br>") : "Nilai Gabungan siswa belum mencapai batas nilai terendah tahun lalu."}<br><br>
+    ✅ <strong>Jika KK siswa masih berada di Zonasi lokasi sekolah tujuan, maka jika anda menggunakan Jalur DOMISILI WILAYAH - Sleman , diprediksi siswa tersebut akan berpeluang diterima di :</strong><br>
+    ${PeluangDiSekolahDomisiliWilayah.length > 0 ? PeluangDiSekolahDomisiliWilayah.join("<br>") : "Nilai Gabungan siswa belum mencapai batas nilai terendah tahun lalu."}<br>
+  `;
+
+  document.getElementById("output").innerHTML = output;
+}
+
+
+
+  
+
+    loadInputs();
+  </script>
   <br><br>
       <button type="button" class="secondary" onclick="resetForm()">Bersihkan Form</button>
     <a href="https://wa.me/628112500028?text=Halo%20saya%20mau%20tanya%20soal%20SPMB" target="_blank">
