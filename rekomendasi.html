@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulasi Peluang SMPN Sleman 2025 - Berdasar KK & Nilai Gabungan</title>
+  <style>
+    /* Style utama menyesuaikan contoh */
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.6;
+      background: #fdfdfd;
+      color: #111;
+      padding: 1rem;
+      margin: 0 auto;
+      max-width: 480px;
+    }
+    header {
+      background: #004466;
+      color: white;
+      padding: 10px 20px;
+      margin-bottom: 16px;
+    }
+    .section {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    input[type="number"], select {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      margin-top: 0.25rem;
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      background-color: #fff;
+    }
+    input[type="number"]:focus, select:focus {
+      border-color: #007bff;
+      outline: none;
+      background-color: #f0f8ff;
+    }
+    .result {
+      margin-top: 2rem;
+      padding: 1rem;
+      font-size: 18px;
+      border-radius: 10px;
+      background-color: #e9f7ff;
+      border: 2px solid #007bff;
+      min-height: 80px;
+    }
+    button {
+      font-size: 20px;
+      padding: 14px 24px;
+      margin-top: 1.1rem;
+      margin-bottom: .4rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      background: #4CAF50;
+      color: white;
+      transition: background 0.2s ease;
+    }
+
+    button:active {
+      background: #388E3C;
+    }
+    button.secondary {
+      background-color: #e0e0e0;
+      color: #333;
+    }
+    button.secondary:active {
+      background-color: #aaa;
+    }
+    h1, h2 {
+      text-align: center;
+      font-size: 22px;
+      margin-top: 1.5rem;
+      color: #004085;
+    }
+    small { color: #444; }
+    .hidden { display: none;}
+    @media(max-width: 650px) {
+      body { font-size: 17px;}
+      button, input, select { font-size: 17px;}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h2>Simulasi SMPN Sleman 2025 - Pilih Sesuai KK & Nilai Gabungan</h2>
+</header>
+<div class="section">
+  <p>
+    <b>Petunjuk:</b><br>
+    Pilih asal <b>Kartu Keluarga</b> (KK) Anda.<br>
+    Input <b>Nilai Gabungan (NG)</b> hasil olahan rapor & ASPD & Nilai Prestasi (jika punya).<br>
+    Jika KK Sleman, pilih <b>Kecamatan, Kelurahan</b> alamat KK Anda.
+    <br/>
+    Sistem akan merekomendasikan <b>6 SMP Negeri potensial</b> dengan peluang terbaik berdasar data kuota & prediksi batas nilai.
+  </p>
+</div>
+<form id="form-kk-ng">
+  <div class="section">
+    <label>Asal Kartu Keluarga (KK):</label>
+    <select id="asal_kk" onchange="handleKkChange()">
+      <option value="">Pilih Asal KK...</option>
+      <option value="sleman">KK Kabupaten Sleman</option>
+      <option value="luar">KK Luar Kabupaten Sleman</option>
+    </select>
+
+    <div id="pilihan-wilayah" class="hidden">
+      <label>Pilih Kecamatan, Kelurahan (Sesuai KK):</label>
+      <select id="wilayah">
+
+      </select>
+    </div>
+
+    <label style="margin-top:1.5rem;">Nilai Gabungan (NG) Anda:</label>
+    <input type="number" step="0.01" min="0" max="400" id="ng_input" placeholder="Masukkan nilai gabungan (misal: 255.30)">
+  </div>
+  <button type="button" onclick="cekPeluang()">Cek Peluang Sekolah Negeri</button>
+</form>
+<div class="result" id="output">
+  Silakan lengkapi semua input, lalu klik <b>Cek Peluang Sekolah Negeri</b>.
+</div>
+<button type="button" class="secondary" onclick="resetForm()">Bersihkan Form</button>
+
+<script>
+//// ==== Data Sample (Edit sesuai kebutuhan) ====
+const dataSekolah = [
+
+
+    {
+      "nomor": 1,
+      "nama_sekolah": "SMPN 1 SLEMAN",
+      "pred_prestasi": 268.09,
+      "pred_wilayah": 250.92,
+      "japres_nik_sleman": 68,
+      "japres_nik_luar": 11,
+      "sisa_domwil": 95
+    },
+    {
+      "nomor": 2,
+      "nama_sekolah": "SMPN 2 SLEMAN",
+      "pred_prestasi": 246.27,
+      "pred_wilayah": 236.50,
+      "japres_nik_sleman": 59,
+      "japres_nik_luar": 9,
+      "sisa_domwil": 91
+    },
+    {
+      "nomor": 3,
+      "nama_sekolah": "SMPN 3 SLEMAN",
+      "pred_prestasi": 246.84,
+      "pred_wilayah": 231.86,
+      "japres_nik_sleman": 48,
+      "japres_nik_luar": 8,
+      "sisa_domwil": 54
+    },
+    {
+      "nomor": 4,
+      "nama_sekolah": "SMPN 4 SLEMAN",
+      "pred_prestasi": 245.00,
+      "pred_wilayah": 215.66,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 43
+    },
+    {
+      "nomor": 5,
+      "nama_sekolah": "SMPN 5 SLEMAN",
+      "pred_prestasi": 245.00,
+      "pred_wilayah": 199.44,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 67
+    },
+    {
+      "nomor": 6,
+      "nama_sekolah": "SMPN 1 DEPOK",
+      "pred_prestasi": 261.74,
+      "pred_wilayah": 250.44,
+      "japres_nik_sleman": 59,
+      "japres_nik_luar": 9,
+      "sisa_domwil": 98
+    },
+    {
+      "nomor": 7,
+      "nama_sekolah": "SMPN 2 DEPOK",
+      "pred_prestasi": 246.49,
+      "pred_wilayah": 237.80,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 34
+    },
+    {
+      "nomor": 8,
+      "nama_sekolah": "SMPN 3 DEPOK",
+      "pred_prestasi": 250.99,
+      "pred_wilayah": 242.20,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 56
+    },
+    {
+      "nomor": 9,
+      "nama_sekolah": "SMPN 4 DEPOK",
+      "pred_prestasi": 279.69,
+      "pred_wilayah": 261.66,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 68
+    },
+    {
+      "nomor": 10,
+      "nama_sekolah": "SMPN 5 DEPOK",
+      "pred_prestasi": 246.53,
+      "pred_wilayah": 200.50,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 55
+    },
+    {
+      "nomor": 11,
+      "nama_sekolah": "SMPN 1 MLATI",
+      "pred_prestasi": 247.16,
+      "pred_wilayah": 234.62,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 39
+    },
+    {
+      "nomor": 12,
+      "nama_sekolah": "SMPN 2 MLATI",
+      "pred_prestasi": 248.56,
+      "pred_wilayah": 237.32,
+      "japres_nik_sleman": 48,
+      "japres_nik_luar": 8,
+      "sisa_domwil": 80
+    },
+    {
+      "nomor": 13,
+      "nama_sekolah": "SMPN 3 MLATI",
+      "pred_prestasi": 248.60,
+      "pred_wilayah": 224.86,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 49
+    },
+    {
+      "nomor": 14,
+      "nama_sekolah": "SMPN 1 KALASAN",
+      "pred_prestasi": 267.15,
+      "pred_wilayah": 199.44,
+      "japres_nik_sleman": 48,
+      "japres_nik_luar": 8,
+      "sisa_domwil": 63
+    },
+    {
+      "nomor": 15,
+      "nama_sekolah": "SMPN 2 KALASAN",
+      "pred_prestasi": 245.00,
+      "pred_wilayah": 219.94,
+      "japres_nik_sleman": 59,
+      "japres_nik_luar": 9,
+      "sisa_domwil": 86
+    },
+    {
+      "nomor": 16,
+      "nama_sekolah": "SMPN 3 KALASAN",
+      "pred_prestasi": 246.28,
+      "pred_wilayah": 233.82,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 52
+    },
+    {
+      "nomor": 17,
+      "nama_sekolah": "SMPN 4 KALASAN",
+      "pred_prestasi": 246.65,
+      "pred_wilayah": 237.20,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 40
+    },
+    {
+      "nomor": 18,
+      "nama_sekolah": "SMPN 1 GODEAN",
+      "pred_prestasi": 279.86,
+      "pred_wilayah": 260.42,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 66
+    },
+    {
+      "nomor": 19,
+      "nama_sekolah": "SMPN 2 GODEAN",
+      "pred_prestasi": 248.24,
+      "pred_wilayah": 239.54,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 56
+    },
+    {
+      "nomor": 20,
+      "nama_sekolah": "SMPN 3 GODEAN",
+      "pred_prestasi": 262.85,
+      "pred_wilayah": 252.00,
+      "japres_nik_sleman": 59,
+      "japres_nik_luar": 9,
+      "sisa_domwil": 70
+    },
+    {
+      "nomor": 21,
+      "nama_sekolah": "SMPN 1 NGAGLIK",
+      "pred_prestasi": 245.00,
+      "pred_wilayah": 210.98,
+      "japres_nik_sleman": 59,
+      "japres_nik_luar": 9,
+      "sisa_domwil": 100
+    },
+    {
+      "nomor": 22,
+      "nama_sekolah": "SMPN 2 NGAGLIK",
+      "pred_prestasi": 248.11,
+      "pred_wilayah": 235.77,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 52
+    },
+    {
+      "nomor": 23,
+      "nama_sekolah": "SMPN 3 NGAGLIK",
+      "pred_prestasi": 246.72,
+      "pred_wilayah": 221.34,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 49
+    },
+    {
+      "nomor": 24,
+      "nama_sekolah": "SMPN 4 NGAGLIK",
+      "pred_prestasi": 249.99,
+      "pred_wilayah": 226.14,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 48
+    },
+    {
+      "nomor": 25,
+      "nama_sekolah": "SMPN 1 PAKEM",
+      "pred_prestasi": 246.89,
+      "pred_wilayah": 241.96,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 48
+    },
+    {
+      "nomor": 26,
+      "nama_sekolah": "SMPN 2 PAKEM",
+      "pred_prestasi": 245.00,
+      "pred_wilayah": 197.20,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 66
+    },
+    {
+      "nomor": 27,
+      "nama_sekolah": "SMPN 3 PAKEM",
+      "pred_prestasi": 245.00,
+      "pred_wilayah": 211.88,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 64
+    },
+    {
+      "nomor": 28,
+      "nama_sekolah": "SMPN 4 PAKEM",
+      "pred_prestasi": 282.87,
+      "pred_wilayah": 257.12,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 72
+    },
+    {
+      "nomor": 29,
+      "nama_sekolah": "SMPN 1 SEYEGAN",
+      "pred_prestasi": 254.97,
+      "pred_wilayah": 238.60,
+      "japres_nik_sleman": 68,
+      "japres_nik_luar": 11,
+      "sisa_domwil": 96
+    },
+    {
+      "nomor": 30,
+      "nama_sekolah": "SMPN 1 MINGGIR",
+      "pred_prestasi": 246.99,
+      "pred_wilayah": 223.54,
+      "japres_nik_sleman": 68,
+      "japres_nik_luar": 11,
+      "sisa_domwil": 91
+    },
+    {
+      "nomor": 31,
+      "nama_sekolah": "SMPN 1 MOYUDAN",
+      "pred_prestasi": 246.46,
+      "pred_wilayah": 241.58,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 37
+    },
+    {
+      "nomor": 32,
+      "nama_sekolah": "SMPN 2 MOYUDAN",
+      "pred_prestasi": 245.00,
+      "pred_wilayah": 206.44,
+      "japres_nik_sleman": 59,
+      "japres_nik_luar": 9,
+      "sisa_domwil": 78
+    },
+    {
+      "nomor": 33,
+      "nama_sekolah": "SMPN 1 GAMPING",
+      "pred_prestasi": 246.53,
+      "pred_wilayah": 231.10,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 58
+    },
+    {
+      "nomor": 34,
+      "nama_sekolah": "SMPN 2 GAMPING",
+      "pred_prestasi": 253.46,
+      "pred_wilayah": 216.74,
+      "japres_nik_sleman": 59,
+      "japres_nik_luar": 9,
+      "sisa_domwil": 64
+    },
+    {
+      "nomor": 35,
+      "nama_sekolah": "SMPN 3 GAMPING",
+      "pred_prestasi": 248.26,
+      "pred_wilayah": 227.94,
+      "japres_nik_sleman": 59,
+      "japres_nik_luar": 9,
+      "sisa_domwil": 64
+    },
+    {
+      "nomor": 36,
+      "nama_sekolah": "SMPN 4 GAMPING",
+      "pred_prestasi": 245.00,
+      "pred_wilayah": 209.72,
+      "japres_nik_sleman": 59,
+      "japres_nik_luar": 9,
+      "sisa_domwil": 94
+    },
+    {
+      "nomor": 37,
+      "nama_sekolah": "SMPN 1 BERBAH",
+      "pred_prestasi": 252.59,
+      "pred_wilayah": 234.28,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 29
+    },
+    {
+      "nomor": 38,
+      "nama_sekolah": "SMPN 2 BERBAH",
+      "pred_prestasi": 258.23,
+      "pred_wilayah": 242.87,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 52
+    },
+    {
+      "nomor": 39,
+      "nama_sekolah": "SMPN 3 BERBAH",
+      "pred_prestasi": 245.00,
+      "pred_wilayah": 216.08,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 63
+    },
+    {
+      "nomor": 40,
+      "nama_sekolah": "SMPN 1 NGEMPLAK",
+      "pred_prestasi": 246.24,
+      "pred_wilayah": 228.95,
+      "japres_nik_sleman": 59,
+      "japres_nik_luar": 9,
+      "sisa_domwil": 78
+    },
+    {
+      "nomor": 41,
+      "nama_sekolah": "SMPN 2 NGEMPLAK",
+      "pred_prestasi": 248.55,
+      "pred_wilayah": 211.30,
+      "japres_nik_sleman": 59,
+      "japres_nik_luar": 9,
+      "sisa_domwil": 84
+    },
+    {
+      "nomor": 42,
+      "nama_sekolah": "SMPN 1 TURI",
+      "pred_prestasi": 246.34,
+      "pred_wilayah": 226.64,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 55
+    },
+    {
+      "nomor": 43,
+      "nama_sekolah": "SMPN 2 TURI",
+      "pred_prestasi": 249.18,
+      "pred_wilayah": 218.00,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 47
+    },
+    {
+      "nomor": 44,
+      "nama_sekolah": "SMPN 3 TURI",
+      "pred_prestasi": 245.00,
+      "pred_wilayah": 177.80,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 63
+    },
+    {
+      "nomor": 45,
+      "nama_sekolah": "SMPN 1 CANGKRINGAN",
+      "pred_prestasi": 247.87,
+      "pred_wilayah": 211.90,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 56
+    },
+    {
+      "nomor": 46,
+      "nama_sekolah": "SMPN 2 CANGKRINGAN",
+      "pred_prestasi": 268.78,
+      "pred_wilayah": 187.30,
+      "japres_nik_sleman": 29,
+      "japres_nik_luar": 5,
+      "sisa_domwil": 54
+    },
+    {
+      "nomor": 47,
+      "nama_sekolah": "SMPN 1 PRAMBANAN",
+      "pred_prestasi": 246.89,
+      "pred_wilayah": 232.66,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 55
+    },
+    {
+      "nomor": 48,
+      "nama_sekolah": "SMPN 2 PRAMBANAN",
+      "pred_prestasi": 245.00,
+      "pred_wilayah": 212.57,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 22
+    },
+    {
+      "nomor": 49,
+      "nama_sekolah": "SMPN 3 PRAMBANAN",
+      "pred_prestasi": 245.00,
+      "pred_wilayah": 92.96,
+      "japres_nik_sleman": 29,
+      "japres_nik_luar": 5,
+      "sisa_domwil": 48
+    },
+    {
+      "nomor": 50,
+      "nama_sekolah": "SMPN 4 PRAMBANAN",
+      "pred_prestasi": 245.00,
+      "pred_wilayah": 198.08,
+      "japres_nik_sleman": 19,
+      "japres_nik_luar": 3,
+      "sisa_domwil": 13
+    },
+    {
+      "nomor": 51,
+      "nama_sekolah": "SMPN 1 TEMPEL",
+      "pred_prestasi": 246.98,
+      "pred_wilayah": 223.94,
+      "japres_nik_sleman": 59,
+      "japres_nik_luar": 9,
+      "sisa_domwil": 73
+    },
+    {
+      "nomor": 52,
+      "nama_sekolah": "SMPN 2 TEMPEL",
+      "pred_prestasi": 247.70,
+      "pred_wilayah": 222.28,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 49
+    },
+    {
+      "nomor": 53,
+      "nama_sekolah": "SMPN 3 TEMPEL",
+      "pred_prestasi": 248.13,
+      "pred_wilayah": 208.79,
+      "japres_nik_sleman": 48,
+      "japres_nik_luar": 8,
+      "sisa_domwil": 70
+    },
+    {
+      "nomor": 54,
+      "nama_sekolah": "SMPN 4 TEMPEL",
+      "pred_prestasi": 245.00,
+      "pred_wilayah": 195.58,
+      "japres_nik_sleman": 40,
+      "japres_nik_luar": 6,
+      "sisa_domwil": 63
+    }
+  
+
+  
+];
+
+const wilayahData = {
+  "daftar_sekolah":[
+
+
+    "SMPN 1 BERBAH", "SMPN 2 BERBAH", "SMPN 3 BERBAH", "SMPN 1 CANGKRINGAN", "SMPN 2 CANGKRINGAN",
+    "SMPN 1 DEPOK", "SMPN 2 DEPOK", "SMPN 3 DEPOK", "SMPN 4 DEPOK", "SMPN 5 DEPOK",
+    "SMPN 1 GAMPING", "SMPN 2 GAMPING", "SMPN 3 GAMPING", "SMPN 4 GAMPING", "SMPN 1 GODEAN",
+    "SMPN 2 GODEAN", "SMPN 3 GODEAN", "SMPN 1 KALASAN", "SMPN 2 KALASAN", "SMPN 3 KALASAN",
+    "SMPN 4 KALASAN", "SMPN 1 MINGGIR", "SMPN 1 MLATI", "SMPN 2 MLATI", "SMPN 3 MLATI",
+    "SMPN 1 MOYUDAN", "SMPN 2 MOYUDAN", "SMPN 1 NGAGLIK", "SMPN 2 NGAGLIK", "SMPN 3 NGAGLIK",
+    "SMPN 4 NGAGLIK", "SMPN 1 NGEMPLAK", "SMPN 2 NGEMPLAK", "SMPN 1 PAKEM", "SMPN 2 PAKEM",
+    "SMPN 3 PAKEM", "SMPN 4 PAKEM", "SMPN 1 PRAMBANAN", "SMPN 2 PRAMBANAN", "SMPN 3 PRAMBANAN",
+    "SMPN 4 PRAMBANAN", "SMPN 1 SEYEGAN", "SMPN 1 SLEMAN", "SMPN 2 SLEMAN", "SMPN 3 SLEMAN",
+    "SMPN 4 SLEMAN", "SMPN 5 SLEMAN", "SMPN 1 TEMPEL", "SMPN 2 TEMPEL", "SMPN 3 TEMPEL",
+    "SMPN 4 TEMPEL", "SMPN 1 TURI", "SMPN 2 TURI", "SMPN 3 TURI"
+  ],
+  "data_per_wilayah": {
+    "Berbah, Jogotirto": { "jumlah": 7, "id_sekolah": [0, 1, 2, 37, 38, 39, 40] },
+    "Berbah, Kalitirto": { "jumlah": 12, "id_sekolah": [0, 1, 2, 6, 7, 8, 17, 18, 19, 20, 37, 40] },
+    "Berbah, Sendangtirto": { "jumlah": 5, "id_sekolah": [0, 1, 2, 7, 40] },
+    "Berbah, Tegaltirto": { "jumlah": 6, "id_sekolah": [0, 1, 2, 7, 8, 17] },
+    "Cangkringan, Argomulyo": { "jumlah": 6, "id_sekolah": [3, 4, 31, 32, 33, 34] },
+    "Cangkringan, Glagaharjo": { "jumlah": 4, "id_sekolah": [3, 4, 33, 34] },
+    "Cangkringan, Kepuharjo": { "jumlah": 4, "id_sekolah": [3, 4, 33, 34] },
+    "Cangkringan, Umbulharjo": { "jumlah": 5, "id_sekolah": [3, 4, 33, 34, 36] },
+    "Cangkringan, Wukirsari": { "jumlah": 7, "id_sekolah": [3, 4, 31, 33, 34, 35, 36] },
+    "Depok, Caturtunggal": { "jumlah": 6, "id_sekolah": [5, 6, 7, 8, 9, 23] },
+    "Depok, Condongcatur": { "jumlah": 9, "id_sekolah": [5, 6, 7, 8, 9, 19, 28, 29, 30] },
+    "Depok, Maguwoharjo": { "jumlah": 9, "id_sekolah": [0, 1, 5, 6, 7, 8, 17, 19, 31] },
+    "Gamping, Ambarketawang": { "jumlah": 6, "id_sekolah": [10, 11, 12, 13, 15, 16] },
+    "Gamping, Balecatur": { "jumlah": 5, "id_sekolah": [10, 12, 13, 14, 16] },
+    "Gamping, Banyuraden": { "jumlah": 6, "id_sekolah": [10, 11, 12, 13, 15, 16] },
+    "Gamping, Nogotirto": { "jumlah": 7, "id_sekolah": [10, 11, 12, 13, 15, 16, 24] },
+    "Gamping, Trihanggo": { "jumlah": 6, "id_sekolah": [11, 12, 22, 23, 24, 45] },
+    "Godean, Sidoagung": { "jumlah": 5, "id_sekolah": [14, 15, 16, 25, 41] },
+    "Godean, Sidoarum": { "jumlah": 8, "id_sekolah": [10, 11, 12, 13, 14, 15, 16, 25] },
+    "Godean, Sidokarto": { "jumlah": 8, "id_sekolah": [10, 11, 12, 13, 14, 15, 16, 25] },
+    "Godean, Sidoluhur": { "jumlah": 5, "id_sekolah": [14, 15, 16, 25, 26] },
+    "Godean, Sidomoyo": { "jumlah": 7, "id_sekolah": [11, 12, 14, 15, 16, 22, 24] },
+    "Godean, Sidomulyo": { "jumlah": 6, "id_sekolah": [10, 13, 14, 15, 16, 25] },
+    "Godean, Sidorejo": { "jumlah": 7, "id_sekolah": [14, 15, 16, 21, 25, 26, 41] },
+    "Kalasan, Purwomartani": { "jumlah": 10, "id_sekolah": [0, 1, 6, 7, 8, 17, 18, 19, 20, 32] },
+    "Kalasan, Selomartani": { "jumlah": 6, "id_sekolah": [17, 18, 19, 20, 31, 32] },
+    "Kalasan, Tamanmartani": { "jumlah": 9, "id_sekolah": [0, 17, 18, 19, 20, 32, 37, 39, 40] },
+    "Kalasan, Tirtomartani": { "jumlah": 8, "id_sekolah": [0, 17, 18, 19, 20, 32, 37, 40] },
+    "Minggir, Sendangagung": { "jumlah": 6, "id_sekolah": [14, 21, 25, 26, 41, 49] },
+    "Minggir, Sendangarum": { "jumlah": 4, "id_sekolah": [14, 21, 25, 26] },
+    "Minggir, Sendangmulyo": { "jumlah": 5, "id_sekolah": [14, 21, 25, 26, 41] },
+    "Minggir, Sendangrejo": { "jumlah": 5, "id_sekolah": [14, 21, 26, 41, 49] },
+    "Minggir, Sendangsari": { "jumlah": 4, "id_sekolah": [14, 21, 41, 49] },
+    "Mlati, Sendangadi": { "jumlah": 11, "id_sekolah": [11, 22, 23, 24, 27, 30, 43, 44, 45, 46, 47] },
+    "Mlati, Sinduadi": { "jumlah": 7, "id_sekolah": [5, 9, 11, 22, 23, 24, 45] },
+    "Mlati, Sumberadi": { "jumlah": 8, "id_sekolah": [22, 23, 24, 41, 43, 44, 45, 46] },
+    "Mlati, Tirtoadi": { "jumlah": 8, "id_sekolah": [11, 12, 15, 22, 23, 24, 41, 44] },
+    "Mlati, Tlogoadi": { "jumlah": 7, "id_sekolah": [11, 12, 22, 23, 24, 44, 45] },
+    "Moyudan, Sumberagung": { "jumlah": 5, "id_sekolah": [14, 16, 21, 25, 26] },
+    "Moyudan, Sumberarum": { "jumlah": 5, "id_sekolah": [14, 15, 21, 25, 26] },
+    "Moyudan, Sumberrahayu": { "jumlah": 4, "id_sekolah": [14, 21, 25, 26] },
+    "Moyudan, Sumbersari": { "jumlah": 4, "id_sekolah": [14, 16, 25, 26] },
+    "Ngaglik, Donoharjo": { "jumlah": 11, "id_sekolah": [27, 28, 29, 30, 35, 36, 45, 46, 47, 52, 53] },
+    "Ngaglik, Minomartani": { "jumlah": 9, "id_sekolah": [5, 6, 7, 8, 9, 28, 29, 30, 36] },
+    "Ngaglik, Sardonoharjo": { "jumlah": 9, "id_sekolah": [9, 27, 28, 29, 30, 35, 36, 45, 53] },
+    "Ngaglik, Sariharjo": { "jumlah": 11, "id_sekolah": [5, 9, 23, 27, 28, 29, 30, 43, 45, 46, 47] },
+    "Ngaglik, Sinduharjo": { "jumlah": 9, "id_sekolah": [5, 6, 9, 23, 27, 28, 29, 30, 36] },
+    "Ngaglik, Sukoharjo": { "jumlah": 9, "id_sekolah": [9, 27, 28, 29, 31, 32, 33, 35, 36] },
+    "Ngemplak, Bimomartani": { "jumlah": 6, "id_sekolah": [3, 4, 18, 20, 31, 32] },
+    "Ngemplak, Sindumartani": { "jumlah": 5, "id_sekolah": [3, 4, 20, 31, 32] },
+    "Ngemplak, Umbulmartani": { "jumlah": 10, "id_sekolah": [3, 28, 29, 31, 32, 33, 34, 35, 36, 53] },
+    "Ngemplak, Wedomartani": { "jumlah": 10, "id_sekolah": [5, 6, 7, 8, 18, 19, 28, 29, 31, 32, 36] },
+    "Ngemplak, Widodomartani": { "jumlah": 6, "id_sekolah": [3, 18, 31, 32, 35, 36] },
+    "Pakem, Candibinangun": { "jumlah": 9, "id_sekolah": [27, 28, 30, 33, 34, 35, 36, 52, 53] },
+    "Pakem, Hargobinangun": { "jumlah": 6, "id_sekolah": [4, 33, 34, 35, 36, 53] },
+    "Pakem, Harjobinangun": { "jumlah": 8, "id_sekolah": [28, 29, 33, 34, 35, 36, 52, 53] },
+    "Pakem, Pakembinangun": { "jumlah": 8, "id_sekolah": [3, 4, 29, 33, 34, 35, 36, 53] },
+    "Pakem, Purwobinangun": { "jumlah": 9, "id_sekolah": [27, 29, 33, 34, 35, 36, 52, 53] },
+    "Prambanan, Bokoharjo": { "jumlah": 7, "id_sekolah": [17, 20, 37, 38, 39, 40] },
+    "Prambanan, Gayamharjo": { "jumlah": 4, "id_sekolah": [37, 38, 39, 40] },
+    "Prambanan, Madurejo": { "jumlah": 9, "id_sekolah": [0, 1, 2, 17, 20, 37, 38, 39, 40] },
+    "Prambanan, Sambirejo": { "jumlah": 4, "id_sekolah": [37, 38, 39, 40] },
+    "Prambanan, Sumberharjo": { "jumlah": 7, "id_sekolah": [1, 2, 17, 37, 38, 39, 40] },
+    "Prambanan, Wukirharjo": { "jumlah": 4, "id_sekolah": [37, 38, 39, 40] },
+    "Seyegan, Margoagung": { "jumlah": 5, "id_sekolah": [41, 44, 48, 49, 50] },
+    "Seyegan, Margodadi": { "jumlah": 5, "id_sekolah": [14, 15, 22, 41, 49] },
+    "Seyegan, Margokaton": { "jumlah": 5, "id_sekolah": [14, 21, 22, 41, 49] },
+    "Seyegan, Margoluwih": { "jumlah": 5, "id_sekolah": [14, 15, 16, 22, 41] },
+    "Seyegan, Margomulyo": { "jumlah": 5, "id_sekolah": [22, 24, 41, 44, 49] },
+    "Sleman, Caturharjo": { "jumlah": 11, "id_sekolah": [41, 43, 44, 45, 46, 47, 48, 49, 50, 51, 53] },
+    "Sleman, Pandowoharjo": { "jumlah": 9, "id_sekolah": [27, 29, 30, 43, 44, 45, 46, 47, 48] },
+    "Sleman, Tridadi": { "jumlah": 9, "id_sekolah": [22, 23, 24, 27, 43, 44, 45, 46, 47] },
+    "Sleman, Triharjo": { "jumlah": 8, "id_sekolah": [43, 44, 45, 46, 48, 50, 51, 53] },
+    "Sleman, Trimulyo": { "jumlah": 11, "id_sekolah": [27, 43, 44, 45, 46, 47, 48, 51, 52, 53] },
+    "Tempel, Banyurejo": { "jumlah": 4, "id_sekolah": [21, 48, 49, 50] },
+    "Tempel, Lumbungrejo": { "jumlah": 4, "id_sekolah": [48, 50, 51, 53] },
+    "Tempel, Margorejo": { "jumlah": 8, "id_sekolah": [43, 44, 46, 48, 50, 51, 52, 53] },
+    "Tempel, Merdikorejo": { "jumlah": 4, "id_sekolah": [48, 51, 52, 53] },
+    "Tempel, Mororejo": { "jumlah": 5, "id_sekolah": [43, 44, 48, 50, 51] },
+    "Tempel, Pondokrejo": { "jumlah": 4, "id_sekolah": [48, 49, 50, 51] },
+    "Tempel, Sumberrejo": { "jumlah": 4, "id_sekolah": [43, 48, 49, 50] },
+    "Tempel, Tambakrejo": { "jumlah": 4, "id_sekolah": [41, 48, 49, 50] },
+    "Turi, Bangunkerto": { "jumlah": 7, "id_sekolah": [43, 44, 46, 48, 51, 52, 53] },
+    "Turi, Donokerto": { "jumlah": 13, "id_sekolah": [27, 30, 33, 34, 35, 36, 43, 44, 46, 47, 51, 52, 53] },
+    "Turi, Girikerto": { "jumlah": 3, "id_sekolah": [34, 52, 53] },
+    "Turi, Wonokerto": { "jumlah": 3, "id_sekolah": [51, 52, 53] }
+  }
+
+ 
+ /////
+  
+  
+  
+  
+  
+};
+
+//// ==== GENERATE Dropdown Wilayah ====
+function generateWilayahOptions() {
+  const select = document.getElementById('wilayah');
+  select.innerHTML = '<option value="">Pilih Kecamatan, Kelurahan ...</option>';
+  const keys = Object.keys(wilayahData.data_per_wilayah);
+  for (const key of keys) {
+    const jml = wilayahData.data_per_wilayah[key].jumlah;
+    select.innerHTML += `<option value="${key}">${key.replace(",", " | ")} (${jml} sekolah)</option>`;
+  }
+}
+
+//// ==== Handler Asal KK ====
+function handleKkChange() {
+  const asalKk = document.getElementById('asal_kk').value;
+  const divWil = document.getElementById('pilihan-wilayah');
+  if (asalKk === "sleman") {
+    divWil.classList.remove('hidden');
+    generateWilayahOptions();
+  } else {
+    divWil.classList.add('hidden');
+  }
+  document.getElementById('output').innerHTML = "Silakan lengkapi semua input, lalu klik <b>Cek Peluang Sekolah Negeri</b>.";
+}
+
+//// ==== CEK PELUANG ====
+function cekPeluang() {
+  const asalKk = document.getElementById('asal_kk').value;
+  let ng = parseFloat(document.getElementById('ng_input').value);
+  if (isNaN(ng) || ng <= 0) {
+    document.getElementById('output').innerHTML = '<b>Masukkan Nilai Gabungan (NG) Anda!</b>';
+    return;
+  }
+  if (asalKk === '') {
+    document.getElementById('output').innerHTML = '<b>Asal KK belum dipilih.</b>';
+    return;
+  }
+
+  let outputHTML = "";
+
+  if (asalKk === "luar") {
+    // KK Luar hanya japres
+    const sekolahLayak = dataSekolah
+      .filter(skl =>
+        ng >= skl.pred_prestasi && skl.japres_nik_luar > 0
+      )
+      .sort((a, b) => b.pred_prestasi - a.pred_prestasi)
+      .slice(0, 6);
+
+    outputHTML += `<h3>Jalur Prestasi (Untuk KK Luar Sleman)</h3>`;
+    if (sekolahLayak.length === 0) {
+      outputHTML += "Maaf, untuk Nilai Gabungan <b>"+ng.toFixed(2)+"</b> tidak ada peluang masuk SMPN pada jalur prestasi (alokasi & prediksi terlalu tinggi).";
+    } else {
+      outputHTML += `Dengan NG <b>${ng.toFixed(2)}</b>, peluang terbesar di:<hr><ol>`;
+      sekolahLayak.forEach(skl => {
+        outputHTML += `<li>${skl.nama_sekolah}: Prediksi minimal NG japres ${skl.pred_prestasi}, Kuota japres luar: ${skl.japres_nik_luar}</li>`;
+      });
+      outputHTML += "</ol><small>Catatan: Kuota jalur japres untuk NIK luar Sleman sangat terbatas.<br>Pilih sesuai minat & urutan pilihan!</small>"
+    }
+    document.getElementById('output').innerHTML = outputHTML;
+  }
+
+  if (asalKk === "sleman") {
+    // KK Sleman: LENGKAPI pilih kecamatan+kelurahan
+    const wilayah = document.getElementById('wilayah').value;
+    if (wilayah === '') {
+      document.getElementById('output').innerHTML = "<b>Pilih kombinasi Kecamatan, Kelurahan sesuai KK!</b>";
+      return;
+    }
+    // Cari list sekolah di wilayah itu:
+    const idxList = wilayahData.data_per_wilayah[wilayah].id_sekolah;
+    // Ambil nama sekolah
+    const sekolahDiWilayah = idxList.map(idx => dataSekolah[idx]).filter(skl => skl); // filter null jika index out of dataSekolah range
+
+    // --- Cari peluang domwil dan japres
+    // 1. Peluang domisil wilayah
+    const sekolahDomwil = sekolahDiWilayah
+      .filter(skl => ng >= skl.pred_wilayah && skl.sisa_domwil > 0)
+      .sort((a,b) => b.pred_wilayah - a.pred_wilayah)
+      .slice(0,6);
+
+    // 2. Peluang jalur prestasi (khusus sleman)
+    const sekolahJapres = sekolahDiWilayah
+      .filter(skl => ng >= skl.pred_prestasi && skl.japres_nik_sleman > 0)
+      .sort((a,b) => b.pred_prestasi - a.pred_prestasi)
+      .slice(0,6);
+
+    outputHTML += `<h3>Rekomendasi SMP Negeri Zona Alamat KK Anda</h3>`;
+    outputHTML += `<b>Kecamatan, Kelurahan:</b> ${wilayah.replace(",", " | ")}<br>`;
+    outputHTML += `<b>Nilai Gabungan (NG):</b> ${ng.toFixed(2)}<hr>`;
+
+    // DOMWIL
+    outputHTML += `<u>Jalur Domisili Wilayah (Zonasi):</u>`;
+    if (sekolahDomwil.length === 0) {
+      outputHTML += `<br><span style="color:red;">Tidak ada peluang SMPN di jalur domisi wilayah (NG terlalu rendah atau tidak ada sisa kursi).</span>`;
+    } else {
+      outputHTML += "<ol>";
+      sekolahDomwil.forEach(skl => {
+        outputHTML += `<li>${skl.nama_sekolah}: Prediksi minimal domwil ${skl.pred_wilayah}, Kuota wilayah: ${skl.sisa_domwil}</li>`;
+      });
+      outputHTML += "</ol>";
+    }
+
+    // JAPRES Sleman
+    outputHTML += `<u>Jalur Prestasi (KK Sleman):</u>`;
+    if (sekolahJapres.length === 0) {
+      outputHTML += `<br><span style="color:red;">Tidak ada peluang SMPN jalur prestasi (NG terlalu rendah atau kuota habis).</span>`;
+    } else {
+      outputHTML += "<ol>";
+      sekolahJapres.forEach(skl => {
+        outputHTML += `<li>${skl.nama_sekolah}: Prediksi minimal NG japres ${skl.pred_prestasi}, Kuota japres Sleman: ${skl.japres_nik_sleman}</li>`;
+      });
+      outputHTML += "</ol>";
+    }
+    outputHTML += `<br><small>Rekomendasi urutan diurutkan dari prediksi passing grade tertinggi (favorit dulu).</small>`;
+
+    document.getElementById('output').innerHTML = outputHTML;
+  }
+}
+
+
+
+//// ==== Reset Form ====
+function resetForm(){
+  document.getElementById('form-kk-ng').reset();
+  document.getElementById('pilihan-wilayah').classList.add('hidden');
+  document.getElementById('output').innerHTML = "Silakan lengkapi semua input, lalu klik <b>Cek Peluang Sekolah Negeri</b>.";
+}
+</script>
+
+</body>
+</html>
