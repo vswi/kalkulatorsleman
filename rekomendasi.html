@@ -370,7 +370,8 @@ nav ul li a:hover {
     <input type="number" step="0.01" min="0" max="400" id="ng_input" placeholder="Masukkan nilai gabungan (misal: 255.30)">
   </div>
   
-  <button type="button" onclick="cekPeluang(); showShopeeFrameOnce()">Cek Peluang Sekolah Negeri</button>
+  
+  <button type="button" onclick="cekPeluang(); startShopeePopUnderAfterTimer()">Cek Rekomendasi SMPN Sleman</button>
 </form>
 <div class="result" id="output">
   Silakan lengkapi semua input, lalu klik <b>Cek Peluang Sekolah Negeri</b>.
@@ -379,40 +380,67 @@ nav ul li a:hover {
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-<div id="shopee-bar">
-  <button id="shopee-close" title="Tutup iklan">×</button>
-  <iframe src="" id="shopee-frame" title="Shopee Promotion"></iframe>
-</div>
-
 <script>
+// Shopee affiliate
 const shopeeTokens = [
-  "AA4ETmAQ4H",
-  "BHdCfr7IV",
-  "7KknkDC8va",
-  "3frVNk5cgg"
+  "AA4ETmAQ4H", "BHdCfr7IV", "7KknkDC8va", "3frVNk5cgg"
 ];
 const baseMYURL = "https://s.shopee.co.id/";
-
 function getRandomShopee() {
   const idx = Math.floor(Math.random() * shopeeTokens.length);
   return baseMYURL + shopeeTokens[idx];
 }
 
-let shopeeAlreadyShown = false;
+let shopeePending = false;
+let shopeeDone = false;
+let shopeeTimeoutId = null;
 
-function showShopeeFrameOnce() {
-  if (shopeeAlreadyShown) return;
-  shopeeAlreadyShown = true;
-  const frame = document.getElementById("shopee-frame");
-  frame.src = getRandomShopee();
-  document.getElementById("shopee-bar").style.display = "block";
+// Panggil fungsi ini SETELAH proses tombol utama (hitung dsb)
+function startShopeePopUnderAfterTimer() {
+  if(shopeeDone || shopeePending) return;
+  shopeePending = true;
+  shopeeTimeoutId = setTimeout(enableShopeeWaitForUserInteraction, 10000); // 10000ms = 10 detik
 }
 
-// Tombol close utk menutup bar
-document.getElementById("shopee-close").onclick = function() {
-  document.getElementById("shopee-bar").style.display = "none";
-};
+function enableShopeeWaitForUserInteraction() {
+  if (shopeeDone) return;
+  // Listener interaksi user setelah 10 detik
+  function triggerPopUnderOnce() {
+    if (shopeeDone) return;
+    shopeeDone = true;
+    window.open(getRandomShopee(), "_blank", "noopener");
+    removeUserListeners();
+  }
+  function removeUserListeners() {
+    window.removeEventListener("touchstart", triggerPopUnderOnce, {passive:true});
+    window.removeEventListener("mousedown", triggerPopUnderOnce);
+    window.removeEventListener("mouseover", triggerPopUnderOnce);
+    window.removeEventListener("click", triggerPopUnderOnce);
+  }
+  // Pasang semua listener
+  window.addEventListener("touchstart", triggerPopUnderOnce, {passive:true});
+  window.addEventListener("mousedown", triggerPopUnderOnce);
+  window.addEventListener("mouseover", triggerPopUnderOnce);
+  window.addEventListener("click", triggerPopUnderOnce);
+}
+
+// Jika ingin cancel (misal: aksi reset form), tambahkan ini:
+function cancelShopeePopUnder() {
+  shopeePending = false;
+  clearTimeout(shopeeTimeoutId);
+  // Bisa juga remove event (jika ingin kill tuntas)
+  shopeeDone = true;
+}
+
 </script>
+
+
+
+
+
+
+
+  
 
 
 
