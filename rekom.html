@@ -1059,8 +1059,27 @@ function cekPeluang() {
     }
     // Cari list sekolah di wilayah itu:
     const idxList = wilayahData.data_per_wilayah[wilayah].id_sekolah;
+    
+    
+    
+    
+    
+    
     // Ambil nama sekolah
-    const sekolahDiWilayah = idxList.map(idx => dataSekolah[idx]).filter(skl => skl); // filter null jika index out of dataSekolah range
+    //////const sekolahDiWilayah = idxList.map(idx => dataSekolah[idx]).filter(skl => skl); 
+    const sekolahDiWilayah = idxList
+  .map(idx => {
+    const nama = wilayahData.daftar_sekolah[idx];
+    return dataSekolah.find(s=>s.nama_sekolah===nama);
+  })
+  .filter(Boolean);
+
+
+
+
+
+    
+    // filter null jika index out of dataSekolah range
 
     // --- Cari peluang domwil dan japres
     // 1. Peluang domisil wilayah
