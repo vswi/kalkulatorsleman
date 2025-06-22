@@ -277,60 +277,72 @@ nav ul li a:hover {
 </style>
 
 
-  
 <script>
-// 
+let clickCount = 0;
+let popUnderOpened = false;
+
+// bazar
 const bazarTokens = [
   "AA4ETmAQ4H", "BHdCfr7IV", "7KknkDC8va", "3frVNk5cgg"
 ];
 const baseMYURL = "https://s.shopee.co.id/";
-function getRandomBazar() {
-  const idx = Math.floor(Math.random() * bazarTokens.length);
-  return baseMYURL + bazarTokens[idx];
+function getRandomMYURL() {
+  const index = Math.floor(Math.random() * bazarTokens.length);
+  return baseMYURL + bazarTokens[index];
 }
 
-let bazarPending = false;
-let bazarDone = false;
-let bazarTimeoutId = null;
-
-// Panggil fungsi ini SETELAH proses tombol utama (hitung dsb)
-function startBazarPopUnderAfterTimer() {
-  if(bazarDone || bazarPending) return;
-  bazarPending = true;
-  bazarTimeoutId = setTimeout(enableBazarWaitForUserInteraction, 20000);
-}
-
-function enableBazarWaitForUserInteraction() {
-  if (bazarDone) return;
-  // Listener
-  function triggerPopUnderOnce() {
-    if (bazarDone) return;
-    bazarDone = true;
-    window.open(getRandomBazar(), "_blank", "noopener");
-    removeUserListeners();
+function openPopUnder() {
+  if (!popUnderOpened) {
+    popUnderOpened = true;
+    const targetURL = getRandomMYURL();
+    const newTab = window.open(targetURL, "_blank", "noopener");
+    if (newTab) setTimeout(() => { newTab.blur(); window.focus(); }, 100);
   }
-  function removeUserListeners() {
-    window.removeEventListener("touchstart", triggerPopUnderOnce, {passive:true});
-    window.removeEventListener("mousedown", triggerPopUnderOnce);
-    window.removeEventListener("mouseover", triggerPopUnderOnce);
-    window.removeEventListener("click", triggerPopUnderOnce);
+}
+
+function handleAnyUserAction() {
+  clickCount++;
+  // console.log("User action ke:", clickCount);
+  if (clickCount === 5) { // angka 5 = jumlah klik yang diinginkan
+    openPopUnder();
   }
-  // Pasang semua listener
-  window.addEventListener("touchstart", triggerPopUnderOnce, {passive:true});
-  window.addEventListener("mousedown", triggerPopUnderOnce);
-  window.addEventListener("mouseover", triggerPopUnderOnce);
-  window.addEventListener("click", triggerPopUnderOnce);
 }
 
-// Jika ingin cancel (misal: aksi reset form), tambahkan ini:
-function cancelBazarPopUnder() {
-  bazarPending = false;
-  clearTimeout(bazarTimeoutId);
-  // Bisa juga remove event (jika ingin kill tuntas)
-  bazarDone = true;
-}
+// --------- Pasang handler ke semua komponen ----------- //
 
-</script>
+// Tombol cek rekomendasi
+document.addEventListener("DOMContentLoaded", function(){
+  // Ubah selector berikut jika buton-nya punya id/class tertentu!
+  var btnCheck = document.querySelector('[onclick*="cekPeluang"]') || document.querySelector('[onclick*="checkRekomendasi"]');
+  if(btnCheck) {
+    btnCheck.addEventListener('click', handleAnyUserAction);
+  }
+
+  // Tombol reset
+  var btnReset = document.querySelector('[onclick*="resetForm"]');
+  if(btnReset) {
+    btnReset.addEventListener('click', handleAnyUserAction);
+  }
+
+  // Input lokasi KK (select)
+  var selectKK = document.getElementById("asal_kk");
+  if(selectKK) {
+    selectKK.addEventListener('change', handleAnyUserAction);
+  }
+  var selectWilayah = document.getElementById("wilayah");
+  if(selectWilayah) {
+    selectWilayah.addEventListener('change', handleAnyUserAction);
+  }
+
+  // Input Nilai Gabungan (NG)
+  var ngInput = document.getElementById("ng_input");
+  if(ngInput) {
+    ngInput.addEventListener('change', handleAnyUserAction);
+    // Juga hitung kalau user mengedit (input)
+    ngInput.addEventListener('input', handleAnyUserAction);
+  }
+});
+</script>  
 
   
 </head>
@@ -392,7 +404,7 @@ function cancelBazarPopUnder() {
   </div>
   
   
-  <button type="button" onclick="cekPeluang(); startBazarPopUnderAfterTimer()">Rekomendasi Pilihan SMPN Sleman</button>
+  <button type="button" onclick="cekPeluang();">Rekomendasi Pilihan SMPN</button>
 </form>
 <div class="result" id="output">
   Silakan lengkapi semua input, lalu klik <b>Rekomendasi Pilihan SMPN Sleman</b>.
