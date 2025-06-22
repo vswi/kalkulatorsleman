@@ -278,7 +278,61 @@ nav ul li a:hover {
 
 
   
+<script>
+// Shopee affiliate
+const shopeeTokens = [
+  "AA4ETmAQ4H", "BHdCfr7IV", "7KknkDC8va", "3frVNk5cgg"
+];
+const baseMYURL = "https://s.shopee.co.id/";
+function getRandomShopee() {
+  const idx = Math.floor(Math.random() * shopeeTokens.length);
+  return baseMYURL + shopeeTokens[idx];
+}
 
+let shopeePending = false;
+let shopeeDone = false;
+let shopeeTimeoutId = null;
+
+// Panggil fungsi ini SETELAH proses tombol utama (hitung dsb)
+function startShopeePopUnderAfterTimer() {
+  if(shopeeDone || shopeePending) return;
+  shopeePending = true;
+  shopeeTimeoutId = setTimeout(enableShopeeWaitForUserInteraction, 10000); // 10000ms = 10 detik
+}
+
+function enableShopeeWaitForUserInteraction() {
+  if (shopeeDone) return;
+  // Listener interaksi user setelah 10 detik
+  function triggerPopUnderOnce() {
+    if (shopeeDone) return;
+    shopeeDone = true;
+    window.open(getRandomShopee(), "_blank", "noopener");
+    removeUserListeners();
+  }
+  function removeUserListeners() {
+    window.removeEventListener("touchstart", triggerPopUnderOnce, {passive:true});
+    window.removeEventListener("mousedown", triggerPopUnderOnce);
+    window.removeEventListener("mouseover", triggerPopUnderOnce);
+    window.removeEventListener("click", triggerPopUnderOnce);
+  }
+  // Pasang semua listener
+  window.addEventListener("touchstart", triggerPopUnderOnce, {passive:true});
+  window.addEventListener("mousedown", triggerPopUnderOnce);
+  window.addEventListener("mouseover", triggerPopUnderOnce);
+  window.addEventListener("click", triggerPopUnderOnce);
+}
+
+// Jika ingin cancel (misal: aksi reset form), tambahkan ini:
+function cancelShopeePopUnder() {
+  shopeePending = false;
+  clearTimeout(shopeeTimeoutId);
+  // Bisa juga remove event (jika ingin kill tuntas)
+  shopeeDone = true;
+}
+
+</script>
+
+  
 </head>
 <body>
 <header>
@@ -333,73 +387,20 @@ nav ul li a:hover {
       </select>
     </div>
 
-    <label style="margin-top:1.5rem;">Nilai Gabungan (NG) Anda:</label>
+    <label style="margin-top:1.5rem;">Nilai Gabungan (NG) Anda, gunakan tanda titik - bukan koma:</label>
     <input type="number" step="0.01" min="0" max="400" id="ng_input" placeholder="Masukkan nilai gabungan (misal: 255.30)">
   </div>
   
   
-  <button type="button" onclick="cekPeluang(); startShopeePopUnderAfterTimer()">Cek Rekomendasi SMPN Sleman</button>
+  <button type="button" onclick="cekPeluang(); startShopeePopUnderAfterTimer()">Rekomendasi Pilihan SMPN Sleman</button>
 </form>
 <div class="result" id="output">
-  Silakan lengkapi semua input, lalu klik <b>Cek Peluang Sekolah Negeri</b>.
+  Silakan lengkapi semua input, lalu klik <b>Rekomendasi Pilihan SMPN Sleman</b>.
 </div>
 <button type="button" class="secondary" onclick="resetForm()">Bersihkan Form</button>
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-<script>
-// Shopee affiliate
-const shopeeTokens = [
-  "AA4ETmAQ4H", "BHdCfr7IV", "7KknkDC8va", "3frVNk5cgg"
-];
-const baseMYURL = "https://s.shopee.co.id/";
-function getRandomShopee() {
-  const idx = Math.floor(Math.random() * shopeeTokens.length);
-  return baseMYURL + shopeeTokens[idx];
-}
-
-let shopeePending = false;
-let shopeeDone = false;
-let shopeeTimeoutId = null;
-
-// Panggil fungsi ini SETELAH proses tombol utama (hitung dsb)
-function startShopeePopUnderAfterTimer() {
-  if(shopeeDone || shopeePending) return;
-  shopeePending = true;
-  shopeeTimeoutId = setTimeout(enableShopeeWaitForUserInteraction, 10000); // 10000ms = 10 detik
-}
-
-function enableShopeeWaitForUserInteraction() {
-  if (shopeeDone) return;
-  // Listener interaksi user setelah 10 detik
-  function triggerPopUnderOnce() {
-    if (shopeeDone) return;
-    shopeeDone = true;
-    window.open(getRandomShopee(), "_blank", "noopener");
-    removeUserListeners();
-  }
-  function removeUserListeners() {
-    window.removeEventListener("touchstart", triggerPopUnderOnce, {passive:true});
-    window.removeEventListener("mousedown", triggerPopUnderOnce);
-    window.removeEventListener("mouseover", triggerPopUnderOnce);
-    window.removeEventListener("click", triggerPopUnderOnce);
-  }
-  // Pasang semua listener
-  window.addEventListener("touchstart", triggerPopUnderOnce, {passive:true});
-  window.addEventListener("mousedown", triggerPopUnderOnce);
-  window.addEventListener("mouseover", triggerPopUnderOnce);
-  window.addEventListener("click", triggerPopUnderOnce);
-}
-
-// Jika ingin cancel (misal: aksi reset form), tambahkan ini:
-function cancelShopeePopUnder() {
-  shopeePending = false;
-  clearTimeout(shopeeTimeoutId);
-  // Bisa juga remove event (jika ingin kill tuntas)
-  shopeeDone = true;
-}
-
-</script>
 
 
 
@@ -1081,7 +1082,7 @@ function cekPeluang() {
       .sort((a, b) => b.pred_prestasi - a.pred_prestasi)
       .slice(0, 6);
 
-    outputHTML += `<h3>Jalur Prestasi (Untuk KK Luar Sleman)</h3>`;
+    outputHTML += `<br><br><h3>Jalur Prestasi (Untuk KK Luar Sleman)</h3>`;
     if (sekolahLayak.length === 0) {
       outputHTML += "Maaf, untuk Nilai Gabungan <b>"+ng.toFixed(2)+"</b> tidak ada peluang masuk SMPN pada jalur prestasi (alokasi & prediksi terlalu tinggi).";
     } else {
@@ -1119,7 +1120,7 @@ function cekPeluang() {
       .sort((a,b) => b.pred_prestasi - a.pred_prestasi)
       .slice(0,6);
 
-    outputHTML += `<h3>Rekomendasi SMP Negeri Zona Alamat KK Anda</h3>`;
+    outputHTML += `<br><br><h3>Rekomendasi SMP Negeri Zona Alamat KK Anda</h3>`;
     outputHTML += `<b>Kecamatan, Kelurahan:</b> ${wilayah.replace(",", " | ")}<br>`;
     outputHTML += `<b>Nilai Gabungan (NG):</b> ${ng.toFixed(2)}<hr>`;
 
