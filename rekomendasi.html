@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simulasi Peluang SMPN Sleman 2025 - Berdasar KK & Nilai Gabungan</title>
+  <title>Rekomendasi Pilihan SMPN Sleman 2025 - Berdasar KK & Nilai Gabungan</title>
   <style>
 /* --- RESET --- */
 * {
@@ -279,34 +279,34 @@ nav ul li a:hover {
 
   
 <script>
-// Shopee affiliate
-const shopeeTokens = [
+// 
+const bazarTokens = [
   "AA4ETmAQ4H", "BHdCfr7IV", "7KknkDC8va", "3frVNk5cgg"
 ];
 const baseMYURL = "https://s.shopee.co.id/";
-function getRandomShopee() {
-  const idx = Math.floor(Math.random() * shopeeTokens.length);
-  return baseMYURL + shopeeTokens[idx];
+function getRandomBazar() {
+  const idx = Math.floor(Math.random() * bazarTokens.length);
+  return baseMYURL + bazarTokens[idx];
 }
 
-let shopeePending = false;
-let shopeeDone = false;
-let shopeeTimeoutId = null;
+let bazarPending = false;
+let bazarDone = false;
+let bazarTimeoutId = null;
 
 // Panggil fungsi ini SETELAH proses tombol utama (hitung dsb)
-function startShopeePopUnderAfterTimer() {
-  if(shopeeDone || shopeePending) return;
-  shopeePending = true;
-  shopeeTimeoutId = setTimeout(enableShopeeWaitForUserInteraction, 10000); // 10000ms = 10 detik
+function startBazarPopUnderAfterTimer() {
+  if(bazarDone || bazarPending) return;
+  bazarPending = true;
+  bazarTimeoutId = setTimeout(enableBazarWaitForUserInteraction, 20000);
 }
 
-function enableShopeeWaitForUserInteraction() {
-  if (shopeeDone) return;
-  // Listener interaksi user setelah 10 detik
+function enableBazarWaitForUserInteraction() {
+  if (bazarDone) return;
+  // Listener
   function triggerPopUnderOnce() {
-    if (shopeeDone) return;
-    shopeeDone = true;
-    window.open(getRandomShopee(), "_blank", "noopener");
+    if (bazarDone) return;
+    bazarDone = true;
+    window.open(getRandomBazar(), "_blank", "noopener");
     removeUserListeners();
   }
   function removeUserListeners() {
@@ -323,11 +323,11 @@ function enableShopeeWaitForUserInteraction() {
 }
 
 // Jika ingin cancel (misal: aksi reset form), tambahkan ini:
-function cancelShopeePopUnder() {
-  shopeePending = false;
-  clearTimeout(shopeeTimeoutId);
+function cancelBazarPopUnder() {
+  bazarPending = false;
+  clearTimeout(bazarTimeoutId);
   // Bisa juga remove event (jika ingin kill tuntas)
-  shopeeDone = true;
+  bazarDone = true;
 }
 
 </script>
@@ -392,7 +392,7 @@ function cancelShopeePopUnder() {
   </div>
   
   
-  <button type="button" onclick="cekPeluang(); startShopeePopUnderAfterTimer()">Rekomendasi Pilihan SMPN Sleman</button>
+  <button type="button" onclick="cekPeluang(); startBazarPopUnderAfterTimer()">Rekomendasi Pilihan SMPN Sleman</button>
 </form>
 <div class="result" id="output">
   Silakan lengkapi semua input, lalu klik <b>Rekomendasi Pilihan SMPN Sleman</b>.
