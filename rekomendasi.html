@@ -1125,7 +1125,7 @@ function cekPeluang() {
     outputHTML += `<b>Nilai Gabungan (NG):</b> ${ng.toFixed(2)}<hr>`;
 
     // DOMWIL
-    outputHTML += `<u>Jalur Domisili Wilayah (Zonasi):</u>`;
+    outputHTML += `<br><br><u>Jalur Domisili Wilayah (Zonasi):</u>`;
     if (sekolahDomwil.length === 0) {
       outputHTML += `<br><span style="color:red;">Tidak ada peluang SMPN di jalur domisi wilayah (NG terlalu rendah atau tidak ada sisa kursi).</span>`;
     } else {
@@ -1137,7 +1137,7 @@ function cekPeluang() {
     }
 
     // JAPRES Sleman
-    outputHTML += `<u>Jalur Prestasi (KK Sleman):</u>`;
+    outputHTML += `<br><br><u>Jalur Prestasi (KK Sleman):</u>`;
     if (sekolahJapres.length === 0) {
       outputHTML += `<br><span style="color:red;">Tidak ada peluang SMPN jalur prestasi (NG terlalu rendah atau kuota habis).</span>`;
     } else {
