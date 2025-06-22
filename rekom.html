@@ -1089,10 +1089,12 @@ function cekPeluang() {
       .slice(0,6);
 
     // 2. Peluang jalur prestasi (khusus sleman)
-    const sekolahJapres = sekolahDiWilayah
+    const sekolahJapres = dataSekolah
       .filter(skl => ng >= skl.pred_prestasi && skl.japres_nik_sleman > 0)
       .sort((a,b) => b.pred_prestasi - a.pred_prestasi)
       .slice(0,6);
+
+    
 
     outputHTML += `<br><br><h3>Rekomendasi SMP Negeri Zona Alamat KK Anda</h3>`;
     outputHTML += `<b>Kecamatan, Kelurahan:</b> ${wilayah.replace(",", " | ")}<br>`;
