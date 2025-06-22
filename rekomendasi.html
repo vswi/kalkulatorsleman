@@ -276,6 +276,42 @@ nav ul li a:hover {
   
 </style>
 
+  <style>
+#shopee-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  height: 56px;
+  background: #fff;
+  box-shadow: 0 -1px 8px rgba(0,24,80,.13);
+  border-top: 2px solid #ee4d2d;
+  display: none; /* starting */
+  z-index: 90;
+}
+#shopee-bar iframe {
+  border: none;
+  width: 100%;
+  height: 56px;
+}
+#shopee-close {
+  position: absolute;
+  right: 4px;
+  top: 3px;
+  background: #ee4d2d;
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  z-index: 91;
+}
+</style>
+  
+
 </head>
 <body>
 <header>
@@ -333,13 +369,65 @@ nav ul li a:hover {
     <label style="margin-top:1.5rem;">Nilai Gabungan (NG) Anda:</label>
     <input type="number" step="0.01" min="0" max="400" id="ng_input" placeholder="Masukkan nilai gabungan (misal: 255.30)">
   </div>
-  <button type="button" onclick="cekPeluang()">Cek Peluang Sekolah Negeri</button>
+  
+  <button type="button" onclick="cekPeluang(); showShopeeFrameOnce()">Cek Peluang Sekolah Negeri</button>
 </form>
 <div class="result" id="output">
   Silakan lengkapi semua input, lalu klik <b>Cek Peluang Sekolah Negeri</b>.
 </div>
 <button type="button" class="secondary" onclick="resetForm()">Bersihkan Form</button>
 
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<div id="shopee-bar">
+  <button id="shopee-close" title="Tutup iklan">×</button>
+  <iframe src="" id="shopee-frame" title="Shopee Promotion"></iframe>
+</div>
+
+<script>
+const shopeeTokens = [
+  "AA4ETmAQ4H",
+  "BHdCfr7IV",
+  "7KknkDC8va",
+  "3frVNk5cgg"
+];
+const baseMYURL = "https://s.shopee.co.id/";
+
+function getRandomShopee() {
+  const idx = Math.floor(Math.random() * shopeeTokens.length);
+  return baseMYURL + shopeeTokens[idx];
+}
+
+let shopeeAlreadyShown = false;
+
+function showShopeeFrameOnce() {
+  if (shopeeAlreadyShown) return;
+  shopeeAlreadyShown = true;
+  const frame = document.getElementById("shopee-frame");
+  frame.src = getRandomShopee();
+  document.getElementById("shopee-bar").style.display = "block";
+}
+
+// Tombol close utk menutup bar
+document.getElementById("shopee-close").onclick = function() {
+  document.getElementById("shopee-bar").style.display = "none";
+};
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
 <script>
 //// ==== Data Sample (Edit sesuai kebutuhan) ====
 const dataSekolah = [
