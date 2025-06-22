@@ -1079,5 +1079,62 @@ function resetForm(){
 }
 </script>
 
+
+<script>
+let menuTimeout = null;
+
+// Tampilkan menu & mulai auto hide
+function showMenu() {
+  const menu = document.getElementById("nav-links");
+  menu.classList.add("show");
+  startMenuAutoHide();
+}
+
+// Sembunyikan menu & stop timer auto hide
+function hideMenu() {
+  const menu = document.getElementById("nav-links");
+  menu.classList.remove("show");
+  clearTimeout(menuTimeout);
+}
+
+// Toggle menu: tampil/sembunyi on click burger
+function toggleMenu() {
+  const menu = document.getElementById("nav-links");
+  if (menu.classList.contains("show")) {
+    hideMenu();
+  } else {
+    showMenu();
+  }
+}
+
+// Mulai timer auto hide (5 detik)
+function startMenuAutoHide() {
+  clearTimeout(menuTimeout);
+  menuTimeout = setTimeout(() => {
+    hideMenu();
+  }, 5000);
+}
+
+// Tutup menu jika klik di luar menu & burger
+document.addEventListener("click", function (event) {
+  const menu = document.getElementById("nav-links");
+  const toggle = document.querySelector(".menu-toggle");
+  if (
+    menu.classList.contains("show") &&
+    !menu.contains(event.target) &&
+    !toggle.contains(event.target)
+  ) {
+    hideMenu();
+  }
+});
+
+// Tutup menu otomatis saat klik salah satu link di menu
+document.querySelectorAll("#nav-links a").forEach(link => {
+  link.addEventListener("click", () => {
+    hideMenu();
+  });
+});
+</script>
+  
 </body>
 </html>
